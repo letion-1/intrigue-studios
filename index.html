@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INTRIGUE STUDIOS — AI Systems That Book Clients 24/7</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: 0 0% 0%;
+            --fg: 0 0% 100%;
+            --text: #ffffff;
+            --muted: rgba(255, 255, 255, 0.72);
+            --accent: #a78bfa;
+            --accent-2: #34d399;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Barlow', sans-serif;
+            font-weight: 300;
+            color: var(--text);
+            background: black;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        a,
+        button {
+            font: inherit;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .grain-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 120;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+            background-size: 128px 128px;
+        }
+
+        .section-badge {
+            display: inline-flex;
+            font-family: 'Barlow', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: white;
+            margin-bottom: 1rem;
+            padding: 0.25rem 0.875rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.06);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(100%, 56rem);
+            padding: 0 1rem;
+            z-index: 110;
+            display: flex;
+            justify-content: center;
+        }
+
+        .navbar-pill {
+            width: 100%;
+            height: 3.5rem;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0 1.25rem;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.22);
+            transition: box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .navbar.scrolled .navbar-pill {
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.32);
+        }
+
+        .navbar-brand {
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            font-size: 1.05rem;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: 0.08em;
+            z-index: 10;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.75);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+        }
+
+        .nav-action {
+            background: #fff;
+            color: #000;
+            border-radius: 9999px;
+            padding: 0.85rem 1.4rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-decoration: none;
+            transition: transform 0.25s ease;
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .nav-action:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 1rem;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background: url('hero-bg.png') center/cover no-repeat;
+            filter: brightness(0.72) contrast(1.05);
+            animation: hero-glow 9s ease-in-out infinite;
+        }
+
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.18) 24%, rgba(0, 0, 0, 0) 48%, rgba(0, 0, 0, 0.62) 82%, rgba(0, 0, 0, 0.9) 100%);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top right, rgba(255, 236, 185, 0.24), transparent 26%), radial-gradient(circle at top left, rgba(173, 216, 255, 0.18), transparent 22%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            text-align: center;
+            padding: 8rem 0 5rem;
+        }
+
+        .hero-title {
+            font-size: clamp(3.2rem, 7.5vw, 5.5rem);
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            font-weight: 300;
+            line-height: 1.02;
+            margin: 1rem auto 1.75rem;
+            color: #fff;
+        }
+
+        .hero-subtitle {
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.74);
+            max-width: 44rem;
+            margin: 0 auto 2.5rem;
+            line-height: 1.75;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-button {
+            border-radius: 9999px;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #a78bfa, #34d399);
+            color: #000;
+            box-shadow: 0 16px 45px rgba(167, 139, 250, 0.24);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        /* About Me Section */
+        .about-me {
+            padding: 5rem 0;
+            background: black;
+            position: relative;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+        }
+
+        .about-image {
+            width: 100%;
+            aspect-ratio: 1;
+            background: url('path-to-your-image.jpg') center/cover no-repeat, #222;
+            border-radius: 1rem;
+        }
+
+        .about-text h2 {
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .about-text p {
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        @media (min-width: 768px) {
+            .about-grid {
+                grid-template-columns: 3fr 9fr;
+                gap: 4rem;
+                padding: 4rem;
+            }
+        }
+
+        /* Standard Sections */
+        .section {
+            position: relative;
+            padding: 6rem 0;
+            background: black;
+            z-index: 2;
+        }
+
+        .section-title {
+            font-size: clamp(2.4rem, 5vw, 4rem);
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            font-weight: 300;
+            line-height: 1.04;
+            text-align: center;
+            margin: 0 auto 1rem;
+            color: #fff;
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            color: var(--muted);
+            text-align: center;
+            max-width: 44rem;
+            margin: 0 auto 3rem;
+            line-height: 1.75;
+        }
+
+        /* Grids & Cards */
+        .grid {
+            display: grid;
+            gap: 1.75rem;
+        }
+
+        .grid-cols-2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .grid-cols-3 {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            transition: transform 0.35s ease, background 0.35s ease;
+            text-align: left;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .card-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 1rem;
+            display: grid;
+            place-items: center;
+            margin-bottom: 1.2rem;
+            background: rgba(255, 255, 255, 0.08);
+            font-size: 1.35rem;
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 500;
+            margin-bottom: 0.85rem;
+            color: #fff;
+        }
+
+        .card-description {
+            color: var(--muted);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .card-stat {
+            font-size: 3rem;
+            color: #34d399;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        /* Video Section */
+        /* Video Section */
+        .video-section {
+            padding: 4rem 0;
+            background: black;
+            z-index: 2;
+            position: relative;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .video-item {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 1rem;
+            overflow: hidden;
+            position: relative;
+            height: 250px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .video-thumbnail {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .video-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) brightness(0.7);
+            transition: filter 0.4s ease, transform 0.4s ease;
+        }
+
+        .video-thumbnail:hover img {
+            filter: grayscale(0%) brightness(1);
+            transform: scale(1.03);
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(167, 139, 250, 0.9);
+            /* Uses your primary accent */
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            color: #000;
+            box-shadow: 0 8px 32px rgba(167, 139, 250, 0.4);
+            transition: transform 0.3s ease, background 0.3s ease;
+            z-index: 2;
+        }
+
+        .play-button svg {
+            width: 28px;
+            height: 28px;
+            margin-left: 4px;
+            /* Visually centers the play triangle */
+        }
+
+        .video-thumbnail:hover .play-button {
+            transform: translate(-50%, -50%) scale(1.1);
+            background: #34d399;
+            /* Uses your secondary accent on hover */
+            box-shadow: 0 8px 32px rgba(52, 211, 153, 0.4);
+        }
+
+        /* Styles for the iframe once injected */
+        .video-item iframe {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border: none;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Forms */
+        .form-container {
+            max-width: 26rem;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.95rem;
+            color: var(--muted);
+            margin-bottom: 0.6rem;
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: #fff;
+            padding: 0.95rem 1rem;
+            border-radius: 1rem;
+            font-size: 0.98rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .form-input option {
+            color: black;
+        }
+
+        .form-submit {
+            width: 100%;
+            margin-top: 0.5rem;
+            padding: 1rem 1.2rem;
+            border: none;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #a78bfa, #34d399);
+            color: #000;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.25s ease;
+        }
+
+        .form-submit:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Calendly Popup */
+        .calendly-popup {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .popup-content {
+            background-color: #ffffff;
+            padding: 32px 16px 16px;
+            border-radius: 12px;
+            width: 95%;
+            max-width: 1000px;
+            height: 85vh;
+            position: relative;
+            animation: fadeInScale 0.3s ease-out forwards;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 32px;
+            color: #333;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        #calendly-embed {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Footer */
+        .footer {
+            background: #050505;
+            padding: 4rem 0 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .footer-nav-group h4 {
+            color: #fff;
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-nav-group ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-nav-group ul li {
+            margin-bottom: 1rem;
+        }
+
+        .footer-nav-group ul a {
+            color: rgba(255, 255, 255, 0.65);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s ease;
+        }
+
+        .footer-nav-group ul a:hover {
+            color: #fff;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 2rem;
+        }
+
+        /* Mobile Responsive Adjustments */
+        @media (min-width: 768px) {
+            .footer-nav {
+                flex-direction: row;
+                justify-content: space-evenly;
+                text-align: left;
+            }
+        }
+
+        @media (max-width: 1024px) {
+
+            .grid-cols-3,
+            .grid-cols-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+
+            /* Mobile Menu Styles */
+            .menu-toggle {
+                display: block;
+            }
+
+            .navbar-links {
+                display: none;
+                /* Hidden by default on mobile */
+                position: absolute;
+                top: 110%;
+                left: 0;
+                right: 0;
+                background: rgba(15, 15, 15, 0.95);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 1rem;
+                flex-direction: column;
+                padding: 1.5rem;
+                gap: 1.5rem;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            }
+
+            /* Toggle class added via JS */
+            .navbar-links.active {
+                display: flex;
+            }
+
+            .nav-link {
+                font-size: 1.1rem;
+                text-align: center;
+            }
+
+            .nav-action {
+                padding: 0.75rem 1rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-brand {
+                font-size: 0.9rem;
+            }
+
+            .nav-action {
+                display: none;
+            }
+
+            /* Hide button on very small screens to save space */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="grain-overlay"></div>
+
+    <nav class="navbar" id="navbar">
+        <div class="navbar-pill">
+            <a href="#hero" class="navbar-brand">INTRIGUE STUDIOS</a>
+
+            <div class="navbar-links" id="navLinks">
+                <a href="#about-me" class="nav-link">About</a>
+                <a href="#services" class="nav-link">Services</a>
+                <a href="#work" class="nav-link">Work</a>
+                <a href="#process" class="nav-link">Process</a>
+                <a href="#results" class="nav-link">Pricing</a>
+            </div>
+
+            <button type="button" onclick="openCalendlyPopup(event)" class="nav-action">Get Started</button>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">☰</button>
+        </div>
+    </nav>
+
+    <section class="hero" id="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span
+                    style="display: inline-block; width: 8px; height: 8px; background: #a78bfa; border-radius: 50%; margin-right: 8px;"></span>
+                AI Systems Live · Real Results Now
+            </div>
+            <h1 class="hero-title">
+                Build AI systems that<br>
+                <span style="color: #a78bfa;">multiply your clients</span><br>
+                <span style="color: rgba(255,255,255,0.8);">without adding headcount</span>
+            </h1>
+            <p class="hero-subtitle">
+                Automate lead capture, qualify prospects 24/7, generate scroll-stopping AI video content, and handle
+                customer conversations at scale.
+            </p>
+            <div class="hero-buttons">
+                <button type="button" onclick="openCalendlyPopup(event)" class="hero-button btn-primary">👉 Book Free
+                    Demo</button>
+                <a href="#services" class="hero-button btn-secondary">View Services</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-me" id="about-me">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-image"></div>
+                <div class="about-text">
+                    <h2>About Us</h2>
+                    <p>
+                        We build intelligent AI systems designed to help modern businesses automate operations, improve
+                        client communication, and scale more efficiently in a rapidly evolving digital world.
+                    </p>
+                    <p>
+                        Our work combines automation, design, and AI infrastructure to create systems that are not only
+                        functional, but immersive, elegant, and built around real business outcomes. From AI
+                        receptionists and lead-generation workflows to automated onboarding systems and content engines,
+                        we focus on building technology that removes repetitive manual work and allows businesses to
+                        operate faster and smarter.
+                    </p>
+                    <p>
+                        Founded by Letion, a creative technologist with a background in art, design, systems thinking,
+                        and automation, the agency was built from a vision of merging creativity with intelligent
+                        technology. What began through visual design and digital creativity evolved into developing
+                        AI-powered systems capable of transforming how businesses communicate, sell, and grow.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="services">
+        <div class="container">
+            <div class="section-badge">Your AI Toolkit</div>
+            <h2 class="section-title">Three powerful systems to scale</h2>
+
+            <div class="grid grid-cols-3" style="margin-top: 3rem;">
+                <div class="card">
+                    <div class="card-icon">📞</div>
+                    <h3 class="card-title">AI Receptionist & Voice</h3>
+                    <p class="card-description">Answer every call instantly. Qualify leads, book appointments, and
+                        update your calendar automatically.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🎬</div>
+                    <h3 class="card-title">AI UGC & Video</h3>
+                    <p class="card-description">Generate scroll-stopping, high-converting video content at scale for
+                        Meta, TikTok, and YouTube.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📈</div>
+                    <h3 class="card-title">Lead Automation</h3>
+                    <p class="card-description">Scrape and qualify leads automatically. Sync them to your CRM and
+                        trigger follow-ups.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="video-section" id="work">
+        <div class="container">
+            <div class="video-grid">
+
+                <div class="video-item"
+                    data-video="https://player.vimeo.com/video/1191830570?autoplay=1&title=0&byline=0&portrait=0">
+                    <div class="video-thumbnail">
+                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80"
+                            alt="AI Agent Demo 1">
+                        <div class="play-button">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-item"
+                    data-video="https://player.vimeo.com/video/1182485926?autoplay=1&title=0&byline=0&portrait=0">
+                    <div class="video-thumbnail">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80"
+                            alt="AI Agent Demo 2">
+                        <div class="play-button">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-item"
+                    data-video="https://player.vimeo.com/video/1191833322?autoplay=1&title=0&byline=0&portrait=0">
+                    <div class="video-thumbnail">
+                        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=80"
+                            alt="AI Agent Demo 3">
+                        <div class="play-button">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="about">
+        <div class="container">
+            <div class="section-badge">Who We Work With</div>
+            <h2 class="section-title">Is this for you?</h2>
+            <p class="section-subtitle">
+                We build for businesses that lose money every time a lead goes unanswered. Sound familiar?
+            </p>
+
+            <div class="grid grid-cols-2">
+                <div class="card">
+                    <div class="card-icon">🏡</div>
+                    <h3 class="card-title">Real Estate Agents</h3>
+                    <p class="card-description">
+                        You're manually chasing leads. Response times are slow. Half your leads go cold before you call
+                        back.
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">💪</div>
+                    <h3 class="card-title">Gyms & Coaches</h3>
+                    <p class="card-description">
+                        Prospects enquire at odd hours. You miss them. They sign up with your competitor down the
+                        street.
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🍽️</div>
+                    <h3 class="card-title">Restaurants & Hospitality</h3>
+                    <p class="card-description">
+                        You're buried in reservation requests, catering inquiries, and event bookings. Manual chaos.
+                    </p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🔧</div>
+                    <h3 class="card-title">Service Businesses</h3>
+                    <p class="card-description">
+                        Calls come in while you're on-site. You miss them. That's lost revenue, every single time.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="process">
+        <div class="container">
+            <div class="section-badge">The Process</div>
+            <h2 class="section-title">From consultation to live system</h2>
+            <p class="section-subtitle">
+                No lengthy contracts. No six-month waits. We move fast because you need results now.
+            </p>
+
+            <div class="grid grid-cols-3">
+                <div class="card">
+                    <div style="font-size: 3rem; color: rgba(167,139,250,0.5); font-weight: bold; margin-bottom: 1rem;">
+                        01</div>
+                    <h3 class="card-title">Strategy Call</h3>
+                    <p class="card-description">
+                        30-minute deep dive into your business. We identify exactly where AI automation will have the
+                        biggest impact and fastest ROI.
+                    </p>
+                </div>
+                <div class="card">
+                    <div style="font-size: 3rem; color: rgba(167,139,250,0.5); font-weight: bold; margin-bottom: 1rem;">
+                        02</div>
+                    <h3 class="card-title">Build & Test</h3>
+                    <p class="card-description">
+                        We engineer your complete AI system — voice agents, automations, integrations — and rigorously
+                        test everything before launch.
+                    </p>
+                </div>
+                <div class="card">
+                    <div style="font-size: 3rem; color: rgba(167,139,250,0.5); font-weight: bold; margin-bottom: 1rem;">
+                        03</div>
+                    <h3 class="card-title">Go Live & Scale</h3>
+                    <p class="card-description">
+                        Your system goes live and starts capturing leads, qualifying prospects, and generating results
+                        immediately. We optimize continuously.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="results">
+        <div class="container">
+            <div class="section-badge">Proven Results</div>
+            <h2 class="section-title">Real metrics from live systems</h2>
+            <p class="section-subtitle">
+                These aren't projections. They're actual results from businesses like yours running AI automation right
+                now.
+            </p>
+
+            <div class="grid grid-cols-3">
+                <div class="card" style="text-align: center;">
+                    <div class="card-stat">100%</div>
+                    <h3 class="card-title">Lead Capture Rate</h3>
+                    <p class="card-description">Zero leads fall through the cracks. Every enquiry is logged, qualified,
+                        and acted upon.</p>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <div class="card-stat">&lt;30s</div>
+                    <h3 class="card-title">First Response Time</h3>
+                    <p class="card-description">AI responds to every lead faster than you can read the message. Day or
+                        night.</p>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <div class="card-stat">24/7</div>
+                    <h3 class="card-title">Always On</h3>
+                    <p class="card-description">Your AI never sleeps, takes lunch, or goes on holiday. Leads captured
+                        while you rest.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="book" style="text-align: center; border-top: 1px solid rgba(255,255,255,0.05);">
+        <div class="container">
+            <h2 class="section-title">Let's automate your business</h2>
+            <p class="section-subtitle">Fill in the form below. We'll book your free strategy call instantly.</p>
+
+            <div class="form-container">
+                <form id="bookingForm">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input class="form-input" type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="business">Business Name</label>
+                        <input class="form-input" type="text" id="business" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input class="form-input" type="email" id="email" required>
+                    </div>
+                    <button type="submit" class="form-submit">👉 Continue to Book My Call</button>
+                </form>
+
+                <p style="margin-top: 1.5rem; color: rgba(255,255,255,0.6); font-size: 0.9rem; text-align: center;">
+                    Or schedule directly at <button type="button" onclick="openCalendlyPopup(event)"
+                        style="color: #a78bfa; background: none; border: none; text-decoration: underline; cursor: pointer;">calendly.com</button>.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="calendly-popup" id="calendly-popup">
+        <div class="popup-content">
+            <button type="button" class="popup-close" onclick="closeCalendlyPopup()">&times;</button>
+            <div id="calendly-embed"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-nav">
+                <div class="footer-nav-group">
+                    <h4>About us</h4>
+                    <ul>
+                        <li><a href="#about-me">About INTRIGUE</a></li>
+                        <li><a href="#">Team & Culture</a></li>
+                        <li><a href="#">Our partner network</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-nav-group">
+                    <h4>Discover more</h4>
+                    <ul>
+                        <li><a href="#">Customer success</a></li>
+                        <li><a href="#">Technology</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-nav-group">
+                    <h4>Our services</h4>
+                    <ul>
+                        <li><a href="#services">Data & AI Strategy</a></li>
+                        <li><a href="#services">Data & AI Platform</a></li>
+                        <li><a href="#services">AI Solutions</a></li>
+                        <li><a href="#services">Business Intelligence</a></li>
+                        <li><a href="#services">Platform Operations</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2026 INTRIGUE STUDIOS. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js"></script>
+    <script>
+        // 1. Mobile Menu Toggle Logic
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            // Change icon to 'X' when open
+            if (navLinks.classList.contains('active')) {
+                menuToggle.innerHTML = '✕';
+            } else {
+                menuToggle.innerHTML = '☰';
+            }
+        });
+
+        // Close mobile menu when a link is clicked
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                menuToggle.innerHTML = '☰';
+            });
+        });
+
+        // 2. Calendly Popup Logic
+        const popup = document.getElementById("calendly-popup");
+        const embedContainer = document.getElementById("calendly-embed");
+        const defaultUrl = 'https://calendly.com/letionketienya/project-insight';
+
+        function openCalendlyPopup(e) {
+            if (e) e.preventDefault();
+            popup.style.display = "flex";
+            document.body.style.overflow = "hidden";
+
+            if (embedContainer.innerHTML === "") {
+                Calendly.initInlineWidget({
+                    url: defaultUrl,
+                    parentElement: embedContainer,
+                    resize: true
+                });
+            }
+        }
+
+        function closeCalendlyPopup() {
+            popup.style.display = "none";
+            document.body.style.overflow = "";
+        }
+
+        // 3. Booking Form to Popup (Prefilled)
+        const bookingForm = document.getElementById('bookingForm');
+        bookingForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const business = document.getElementById('business').value.trim();
+            const email = document.getElementById('email').value.trim();
+
+            const prefillParams = new URLSearchParams({
+                name: name,
+                email: email,
+                a1: business
+            });
+
+            embedContainer.innerHTML = '';
+
+            Calendly.initInlineWidget({
+                url: `${defaultUrl}?${prefillParams.toString()}`,
+                parentElement: embedContainer,
+                resize: true
+            });
+
+            openCalendlyPopup();
+        });
+
+        // 4. Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Video Thumbnail to iFrame Swapper
+        document.querySelectorAll('.video-item').forEach(item => {
+            item.addEventListener('click', function () {
+                const videoUrl = this.getAttribute('data-video');
+                if (!videoUrl) return;
+
+                // Create the iframe dynamically
+                const iframe = document.createElement('iframe');
+                iframe.setAttribute('src', videoUrl);
+                iframe.setAttribute('allow', 'autoplay; fullscreen');
+                iframe.setAttribute('allowfullscreen', '');
+
+                // Clear out the thumbnail and button, insert the playing video
+                this.innerHTML = '';
+                this.appendChild(iframe);
+            });
+        });
+    </script>
+</body>
+
+</html>
