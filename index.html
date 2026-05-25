@@ -737,11 +737,11 @@
             <a href="#hero" class="navbar-brand">INTRIGUE STUDIOS</a>
 
             <div class="navbar-links" id="navLinks">
-                <a href="#about-me" class="nav-link">About</a>
                 <a href="#services" class="nav-link">Services</a>
                 <a href="#work" class="nav-link">Work</a>
                 <a href="#process" class="nav-link">Process</a>
                 <a href="#results" class="nav-link">Pricing</a>
+                <a href="#about-me" class="nav-link">About</a>
             </div>
 
             <button type="button" onclick="openCalendlyPopup(event)" class="nav-action">Get Started</button>
@@ -772,34 +772,6 @@
                 <button type="button" onclick="openCalendlyPopup(event)" class="hero-button btn-primary">👉 Book Free
                     Demo</button>
                 <a href="#services" class="hero-button btn-secondary">View Services</a>
-            </div>
-        </div>
-    </section>
-
-    <section class="about-me" id="about-me">
-        <div class="container">
-            <div class="about-grid">
-                <div class="about-image"></div>
-                <div class="about-text">
-                    <h2>About Us</h2>
-                    <p>
-                        We build intelligent AI systems designed to help modern businesses automate operations, improve
-                        client communication, and scale more efficiently in a rapidly evolving digital world.
-                    </p>
-                    <p>
-                        Our work combines automation, design, and AI infrastructure to create systems that are not only
-                        functional, but immersive, elegant, and built around real business outcomes. From AI
-                        receptionists and lead-generation workflows to automated onboarding systems and content engines,
-                        we focus on building technology that removes repetitive manual work and allows businesses to
-                        operate faster and smarter.
-                    </p>
-                    <p>
-                        Founded by Letion, a creative technologist with a background in art, design, systems thinking,
-                        and automation, the agency was built from a vision of merging creativity with intelligent
-                        technology. What began through visual design and digital creativity evolved into developing
-                        AI-powered systems capable of transforming how businesses communicate, sell, and grow.
-                    </p>
-                </div>
             </div>
         </div>
     </section>
@@ -839,7 +811,7 @@
                 <div class="video-item"
                     data-video="https://player.vimeo.com/video/1191830570?autoplay=1&title=0&byline=0&portrait=0">
                     <div class="video-thumbnail">
-                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80"
+                        <img src="vid1-thumbnail.png"
                             alt="AI Agent Demo 1">
                         <div class="play-button">
                             <svg viewBox="0 0 24 24" fill="currentColor">
@@ -852,7 +824,7 @@
                 <div class="video-item"
                     data-video="https://player.vimeo.com/video/1182485926?autoplay=1&title=0&byline=0&portrait=0">
                     <div class="video-thumbnail">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80"
+                        <img src="vid2-thumbnail.png"
                             alt="AI Agent Demo 2">
                         <div class="play-button">
                             <svg viewBox="0 0 24 24" fill="currentColor">
@@ -865,7 +837,7 @@
                 <div class="video-item"
                     data-video="https://player.vimeo.com/video/1191833322?autoplay=1&title=0&byline=0&portrait=0">
                     <div class="video-thumbnail">
-                        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&q=80"
+                        <img src="vid3-thumbnail.png"
                             alt="AI Agent Demo 3">
                         <div class="play-button">
                             <svg viewBox="0 0 24 24" fill="currentColor">
@@ -1013,6 +985,20 @@
                         <label for="email">Email Address</label>
                         <input class="form-input" type="email" id="email" required>
                     </div>
+                    <div class="form-group">
+                        <label for="industry">Your Industry</label>
+                        <select class="form-input" id="industry" name="industry" required>
+                            <option value="">Select your industry</option>
+                            <option>Real Estate (Agents/Agencies)</option>
+                            <option>Yacht / Jet Brokers</option>
+                            <option>Gym / Coaching / Fitness</option>
+                            <option>Restaurant / Hospitality</option>
+                            <option>Service Business (Plumbing, HVAC, etc)</option>
+                            <option>E-Commerce / Online Business</option>
+                            <option>Agency / Professional Services</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
                     <button type="submit" class="form-submit">👉 Continue to Book My Call</button>
                 </form>
 
@@ -1030,6 +1016,34 @@
             <div id="calendly-embed"></div>
         </div>
     </div>
+
+    <section class="about-me" id="about-me">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-image"></div>
+                <div class="about-text">
+                    <h2>About Us</h2>
+                    <p>
+                        We build intelligent AI systems designed to help modern businesses automate operations, improve
+                        client communication, and scale more efficiently in a rapidly evolving digital world.
+                    </p>
+                    <p>
+                        Our work combines automation, design, and AI infrastructure to create systems that are not only
+                        functional, but immersive, elegant, and built around real business outcomes. From AI
+                        receptionists and lead-generation workflows to automated onboarding systems and content engines,
+                        we focus on building technology that removes repetitive manual work and allows businesses to
+                        operate faster and smarter.
+                    </p>
+                    <p>
+                        Founded by Letion, a creative technologist with a background in art, design, systems thinking,
+                        and automation, the agency was built from a vision of merging creativity with intelligent
+                        technology. What began through visual design and digital creativity evolved into developing
+                        AI-powered systems capable of transforming how businesses communicate, sell, and grow.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <footer class="footer">
         <div class="container">
@@ -1125,11 +1139,13 @@
             const name = document.getElementById('name').value.trim();
             const business = document.getElementById('business').value.trim();
             const email = document.getElementById('email').value.trim();
+            const industry = document.getElementById('industry').value.trim()
 
             const prefillParams = new URLSearchParams({
                 name: name,
                 email: email,
-                a1: business
+                a1: industry,
+                a2: business
             });
 
             embedContainer.innerHTML = '';
