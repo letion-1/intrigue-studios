@@ -283,7 +283,7 @@
         .about-image {
             width: 100%;
             aspect-ratio: 1.25;
-            background: url('/intrigue-logo.jpeg') center/cover no-repeat, #222;
+            background: url('./intrigue-logo.jpeg') center/cover no-repeat, #222;
             border-radius: 1rem;
         }
 
@@ -490,6 +490,12 @@
 
             to {
                 opacity: 1;
+            }
+        }
+
+        @media screen and (max-width:768px) {
+            .video-thumbnail img {
+                filter:none;
             }
         }
 
