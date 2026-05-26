@@ -450,7 +450,6 @@
             width: 60px;
             height: 60px;
             background: rgba(167, 139, 250, 0.9);
-            /* Uses your primary accent */
             border-radius: 50%;
             display: grid;
             place-items: center;
@@ -464,13 +463,11 @@
             width: 28px;
             height: 28px;
             margin-left: 4px;
-            /* Visually centers the play triangle */
         }
 
         .video-thumbnail:hover .play-button {
             transform: translate(-50%, -50%) scale(1.1);
             background: #34d399;
-            /* Uses your secondary accent on hover */
             box-shadow: 0 8px 32px rgba(52, 211, 153, 0.4);
         }
 
@@ -495,8 +492,9 @@
 
         @media screen and (max-width:768px) {
             .video-thumbnail img {
-                filter:none;
+                filter: none;
             }
+
             .play-button {
                 background: rgba(138, 138, 138, 0.777);
             }
@@ -668,12 +666,12 @@
             margin: 1.5rem 0 0.5rem;
             font-family: 'Barlow', sans-serif;
         }
-        
+
         .privacy-text ul {
             margin-left: 1.5rem;
             margin-bottom: 1rem;
         }
-        
+
         .privacy-text p {
             margin-bottom: 1rem;
         }
@@ -798,7 +796,6 @@
                 display: none;
             }
 
-            /* Hide button on very small screens to save space */
         }
     </style>
 </head>
@@ -888,8 +885,7 @@
                 <div class="video-item"
                     data-video="https://player.vimeo.com/video/1191830570?autoplay=1&title=0&byline=0&portrait=0">
                     <div class="video-thumbnail">
-                        <img src="vid1-thumbnail.png"
-                            alt="AI Agent Demo 1">
+                        <img src="vid1-thumbnail.png" alt="AI Agent Demo 1">
                         <div class="play-button">
                             <svg viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M8 5v14l11-7z" />
@@ -901,8 +897,7 @@
                 <div class="video-item"
                     data-video="https://player.vimeo.com/video/1182485926?autoplay=1&title=0&byline=0&portrait=0">
                     <div class="video-thumbnail">
-                        <img src="vid2-thumbnail.png"
-                            alt="AI Agent Demo 2">
+                        <img src="vid2-thumbnail.png" alt="AI Agent Demo 2">
                         <div class="play-button">
                             <svg viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M8 5v14l11-7z" />
@@ -914,8 +909,7 @@
                 <div class="video-item"
                     data-video="https://player.vimeo.com/video/1191833322?autoplay=1&title=0&byline=0&portrait=0">
                     <div class="video-thumbnail">
-                        <img src="vid3-thumbnail.png"
-                            alt="AI Agent Demo 3">
+                        <img src="vid3-thumbnail.png" alt="AI Agent Demo 3">
                         <div class="play-button">
                             <svg viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M8 5v14l11-7z" />
@@ -1098,8 +1092,10 @@
         <div class="privacy-content">
             <h2>DATA AND PRIVACY POLICY</h2>
             <div class="privacy-text">
-                <p>At Intrigue Studios, we value your privacy and are committed to protecting your personal data in accordance with the General Data Protection Regulation (GDPR) and applicable German data protection laws.</p>
-                
+                <p>At Intrigue Studios, we value your privacy and are committed to protecting your personal data in
+                    accordance with the General Data Protection Regulation (GDPR) and applicable German data protection
+                    laws.</p>
+
                 <h3>1. INFORMATION WE COLLECT</h3>
                 <p>We may collect the following information through our website, forms, or communication channels:</p>
                 <ul>
@@ -1111,7 +1107,8 @@
                     <li>Website usage data</li>
                     <li>IP address and browser information</li>
                 </ul>
-                <p>Information is collected only when voluntarily submitted or automatically processed through website functionality.</p>
+                <p>Information is collected only when voluntarily submitted or automatically processed through website
+                    functionality.</p>
 
                 <h3>2. PURPOSE OF DATA PROCESSING</h3>
                 <p>We process personal data for purposes including:</p>
@@ -1140,7 +1137,8 @@
                     <li>analyze website traffic</li>
                     <li>support advertising and remarketing campaigns</li>
                 </ul>
-                <p>Where legally required, users will be asked for consent before non-essential cookies are activated.</p>
+                <p>Where legally required, users will be asked for consent before non-essential cookies are activated.
+                </p>
 
                 <h3>5. THIRD-PARTY SERVICES</h3>
                 <p>We may use third-party providers including:</p>
@@ -1155,7 +1153,8 @@
                 <p>These providers may process data in accordance with their own privacy policies.</p>
 
                 <h3>6. DATA STORAGE AND SECURITY</h3>
-                <p>We implement reasonable technical and organizational measures to protect personal data against unauthorized access, disclosure, or misuse.</p>
+                <p>We implement reasonable technical and organizational measures to protect personal data against
+                    unauthorized access, disclosure, or misuse.</p>
                 <p>However, no internet transmission can be guaranteed to be completely secure.</p>
 
                 <h3>7. USER RIGHTS UNDER GDPR</h3>
@@ -1179,9 +1178,11 @@
                 </p>
 
                 <h3>9. CHANGES TO THIS POLICY</h3>
-                <p>We reserve the right to update this Privacy Policy at any time to reflect legal, technical, or operational changes.</p>
+                <p>We reserve the right to update this Privacy Policy at any time to reflect legal, technical, or
+                    operational changes.</p>
             </div>
             <button class="form-submit" id="acceptPrivacyBtn" style="margin-top: 1.5rem;">I Accept</button>
+            <button class="form-submit" id="denyPrivacyBtn" style="margin-top: 1.5rem;">I Deny</button>
         </div>
     </div>
 
@@ -1221,7 +1222,7 @@
                     <img src="intrigue-logo.jpeg" alt="logo" width="300">
                 </div>
                 <div class="footer-nav-group">
-                    
+
                     <h4>About us</h4>
                     <ul>
                         <li><a href="#about-me">About INTRIGUE</a></li>
@@ -1256,7 +1257,6 @@
 
         menuToggle.addEventListener('click', () => {
             navLinks.classList.toggle('active');
-            // Change icon to 'X' when open
             if (navLinks.classList.contains('active')) {
                 menuToggle.innerHTML = '✕';
             } else {
@@ -1279,16 +1279,23 @@
 
         function openCalendlyPopup(e) {
             if (e) e.preventDefault();
-            popup.style.display = "flex";
-            document.body.style.overflow = "hidden";
-
-            if (embedContainer.innerHTML === "") {
-                Calendly.initInlineWidget({
-                    url: defaultUrl,
-                    parentElement: embedContainer,
-                    resize: true
-                });
+            let permission = localStorage.getItem('privacyAccepted')
+            if (!permission) {
+                privacy_popup();
             }
+            const permissionValue = localStorage.getItem('privacyAccepted')
+            if (permissionValue === 'true') {
+                popup.style.display = "flex";
+                document.body.style.overflow = "hidden";
+
+                if (embedContainer.innerHTML === "") {
+                    Calendly.initInlineWidget({
+                        url: defaultUrl,
+                        parentElement: embedContainer,
+                        resize: true
+                    });
+                }
+            } else return;
         }
 
         function closeCalendlyPopup() {
@@ -1340,38 +1347,39 @@
                 const videoUrl = this.getAttribute('data-video');
                 if (!videoUrl) return;
 
-                // Create the iframe dynamically
                 const iframe = document.createElement('iframe');
                 iframe.setAttribute('src', videoUrl);
                 iframe.setAttribute('allow', 'autoplay; fullscreen');
                 iframe.setAttribute('allowfullscreen', '');
 
-                // Clear out the thumbnail and button, insert the playing video
                 this.innerHTML = '';
                 this.appendChild(iframe);
             });
         });
 
         // 6. Privacy Popup Logic
-        document.addEventListener('DOMContentLoaded', () => {
+        function privacy_popup() {
             const privacyPopup = document.getElementById('privacyPopup');
-            const acceptBtn = document.getElementById('acceptPrivacyBtn');
 
-            // Check if user has already accepted the privacy policy
-            if (!localStorage.getItem('privacyAccepted')) {
-                // Show popup if not accepted
-                privacyPopup.style.display = 'flex';
-                document.body.style.overflow = 'hidden'; // Prevent background scrolling
-            }
+            privacyPopup.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        const acceptBtn = document.getElementById('acceptPrivacyBtn');
+        const denyBtn = document.getElementById('denyPrivacyBtn');
 
-            acceptBtn.addEventListener('click', () => {
-                // Save acceptance in localStorage
-                localStorage.setItem('privacyAccepted', 'true');
-                // Hide popup and restore scrolling
-                privacyPopup.style.display = 'none';
-                document.body.style.overflow = '';
-            });
+        acceptBtn.addEventListener('click', () => {
+            // Save acceptance in localStorage
+            localStorage.setItem('privacyAccepted', 'true');
+            // Hide popup and restore scrolling
+            privacyPopup.style.display = 'none';
+            document.body.style.overflow = '';
         });
+
+        denyBtn.addEventListener('click', () => {
+            privacyPopup.style.display = 'none';
+            document.body.style.overflow = '';
+        })
     </script>
 </body>
 
