@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>INTRIGUE STUDIOS — AI Systems That Book Clients 24/7</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: 0 0% 0%;
+      --fg: 0 0% 100%;
+      --surface: rgba(255, 255, 255, 0.04);
+      --surface-strong: rgba(255, 255, 255, 0.08);
+      --border: rgba(255, 255, 255, 0.16);
+      --text: #ffffff;
+      --muted: rgba(255, 255, 255, 0.72);
+      --accent: #a78bfa;
+      --accent-2: #34d399;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      font-weight: 300;
+      color: var(--text);
+      background: black;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    a,
+    button {
+      font: inherit;
+    }
+
+    .grain-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 120;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      background-size: 128px 128px;
+    }
+
+    .liquid-glass {
+      position: relative;
+      background: rgba(255, 255, 255, 0.04);
+      background-blend-mode: luminosity;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.10);
+      overflow: hidden;
+    }
+
+    .liquid-glass::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1.4px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.15) 20%, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0) 60%, rgba(255, 255, 255, 0.15) 80%, rgba(255, 255, 255, 0.45) 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .liquid-glass-strong {
+      position: relative;
+      background: rgba(255, 255, 255, 0.04);
+      background-blend-mode: luminosity;
+      backdrop-filter: blur(50px);
+      -webkit-backdrop-filter: blur(50px);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: 4px 4px 24px rgba(0, 0, 0, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+      overflow: hidden;
+    }
+
+    .liquid-glass-strong::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1.4px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.50) 0%, rgba(255, 255, 255, 0.20) 20%, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0) 60%, rgba(255, 255, 255, 0.20) 80%, rgba(255, 255, 255, 0.50) 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .section-badge {
+      display: inline-flex;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: white;
+      margin-bottom: 1rem;
+      padding: 0.25rem 0.875rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.06);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(100%, 56rem);
+      padding: 0 1rem;
+      z-index: 110;
+      display: flex;
+      justify-content: center;
+    }
+
+    .navbar-pill {
+      width: 100%;
+      height: 3.5rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0 1.25rem;
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.22);
+    }
+
+    .navbar.scrolled .navbar-pill {
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.32);
+    }
+
+    .navbar-brand {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 1.05rem;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: 0.08em;
+    }
+
+    .navbar-links {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-link {
+      color: rgba(255, 255, 255, 0.75);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 400;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: #fff;
+    }
+
+    .nav-action {
+      background: #fff;
+      color: #000;
+      border-radius: 9999px;
+      padding: 0.85rem 1.4rem;
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-decoration: none;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+      transition: transform 0.25s ease;
+    }
+
+    .nav-action:hover {
+      transform: translateY(-2px);
+    }
+
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 1rem;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('hero-bg.png') center/cover no-repeat;
+      filter: brightness(0.72) contrast(1.05);
+      animation: hero-glow 9s ease-in-out infinite;
+    }
+
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.18) 24%, rgba(0, 0, 0, 0) 48%, rgba(0, 0, 0, 0.62) 82%, rgba(0, 0, 0, 0.9) 100%);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(255, 236, 185, 0.24), transparent 26%), radial-gradient(circle at top left, rgba(173, 216, 255, 0.18), transparent 22%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      max-width: 900px;
+      text-align: center;
+      padding: 8rem 0 5rem;
+    }
+
+    .hero-badge {
+      margin: 0 auto 1.5rem;
+    }
+
+    .hero-title {
+      font-size: clamp(3.2rem, 7.5vw, 5.5rem);
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.02;
+      margin: 1rem auto 1.75rem;
+      max-width: 12ch;
+      color: #fff;
+      text-shadow: 0 24px 80px rgba(0, 0, 0, 0.18);
+    }
+
+    .hero-subtitle {
+      font-size: 1.05rem;
+      color: rgba(255, 255, 255, 0.74);
+      max-width: 44rem;
+      margin: 0 auto 2.5rem;
+      line-height: 1.75;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-button {
+      border-radius: 9999px;
+      padding: 1rem 2rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #a78bfa, #34d399);
+      color: #000;
+      box-shadow: 0 16px 45px rgba(167, 139, 250, 0.24);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 55px rgba(167, 139, 250, 0.32);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #fff;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.14);
+      transform: translateY(-2px);
+    }
+
+    .section {
+      position: relative;
+      padding: 6rem 0;
+      overflow: hidden;
+      background: black;
+    }
+
+    .section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.18) 16%, rgba(0, 0, 0, 0.18) 84%, rgba(0, 0, 0, 0.96) 100%);
+      pointer-events: none;
+    }
+
+    .section-background {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.62;
+      z-index: 0;
+    }
+
+    .section-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.28);
+      z-index: 1;
+    }
+
+    .section-content {
+      position: relative;
+      z-index: 5;
+    }
+
+    .section-title {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.04;
+      text-align: center;
+      margin: 0 auto 1rem;
+      color: #fff;
+      max-width: 12ch;
+    }
+
+    .section-subtitle {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.72);
+      text-align: center;
+      max-width: 44rem;
+      margin: 0 auto 3rem;
+      line-height: 1.75;
+    }
+
+    .grid {
+      display: grid;
+      gap: 1.75rem;
+    }
+
+    .grid-cols-1 {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    .grid-cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-cols-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .card {
+      position: relative;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+      backdrop-filter: blur(35px);
+      -webkit-backdrop-filter: blur(35px);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 24px 60px rgba(0, 0, 0, 0.3);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      overflow: hidden;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 1.5rem;
+      right: 1.5rem;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      opacity: 0.7;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 28px 70px rgba(0, 0, 0, 0.35);
+    }
+
+    .card-number {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.5rem;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.2);
+      letter-spacing: 0.2em;
+    }
+
+    .card-icon {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 1rem;
+      display: grid;
+      place-items: center;
+      margin-bottom: 1.2rem;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.04));
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 1.35rem;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 500;
+      margin-bottom: 0.85rem;
+      color: #fff;
+      letter-spacing: -0.01em;
+    }
+
+    .card-description {
+      color: rgba(255, 255, 255, 0.55);
+      line-height: 1.75;
+      font-size: 0.95rem;
+    }
+
+    .cta {
+      position: relative;
+      padding: 7rem 0;
+      overflow: hidden;
+      background: black;
+    }
+
+    .cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.96) 0%, transparent 18%, transparent 82%, rgba(0, 0, 0, 0.96) 100%);
+      pointer-events: none;
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 5;
+      text-align: center;
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .cta-title {
+      font-size: clamp(2.75rem, 7vw, 4.75rem);
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.02;
+      margin: 0 auto 1.75rem;
+      color: #fff;
+      letter-spacing: -0.04em;
+    }
+
+    .cta p {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.72);
+      line-height: 1.75;
+      margin: 0 auto 2.5rem;
+      max-width: 34rem;
+    }
+
+    .cta-actions {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .cta-button {
+      font-weight: 600;
+      border-radius: 9999px;
+      padding: 1rem 2rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      text-decoration: none;
+      transition: transform 0.3s ease;
+    }
+
+    .cta-button-primary {
+      background: rgba(255, 255, 255, 0.92);
+      color: #000;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
+    }
+
+    .cta-button-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #fff;
+    }
+
+    .cta-button-primary:hover,
+    .cta-button-secondary:hover {
+      transform: translateY(-2px);
+    }
+
+    .form-container {
+      margin: 0 auto;
+      max-width: 26rem;
+      text-align: left;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.78);
+      margin-bottom: 0.6rem;
+    }
+
+    .form-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #fff;
+      padding: 0.95rem 1rem;
+      border-radius: 1rem;
+      font-size: 0.98rem;
+      transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #a78bfa;
+      background: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.12);
+    }
+
+    .form-input option {
+      color: black;
+    }
+
+    .form-submit {
+      width: 100%;
+      margin-top: 0.5rem;
+      padding: 1rem 1.2rem;
+      border: none;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, #a78bfa, #34d399);
+      color: #000;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .form-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 45px rgba(167, 139, 250, 0.25);
+    }
+
+    .info-block {
+      background: rgba(255, 255, 255, 0.04);
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 3.5rem 0;
+    }
+
+    .info-content {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .info-grid {
+      display: grid;
+      gap: 1.75rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .info-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 2rem;
+      border-radius: 1.5rem;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 18px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .info-title {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      color: #fff;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+
+    .info-copy,
+    .info-note {
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.8;
+      font-size: 0.96rem;
+    }
+
+    .info-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .info-list li {
+      margin-bottom: 0.9rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .info-note {
+      margin-top: 1.8rem;
+      text-align: center;
+    }   
+
+    .calendly-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      /* Dimmed background */
+      backdrop-filter: blur(4px);
+      /* Modern blur effect */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 99;
+      /* Ensures it sits on top of everything */
+
+      /* Hidden by default - toggle this with JS by changing display to 'flex' */
+      display: none;
+    }
+
+    /* 2. The Popup Box */
+    .popup-content {
+      background-color: #ffffff;
+      padding: 32px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 550px;
+      /* Limits size on desktop */
+      max-height: 85vh;
+      /* Prevents overflow on small screens */
+      overflow-y: auto;
+      /* Adds internal scrollbar if content is too long */
+      position: relative;
+
+      /* Smooth entry animation */
+      animation: fadeInScale 0.3s ease-out forwards;
+    }
+
+    /* 3. The Close Button (X) */
+    .popup-close {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 28px;
+      font-weight: bold;
+      color: #666;
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    .popup-close:hover {
+      color: #000;
+    }
+
+    /* 4. Entry Animation Keyframes */
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @media (max-width: 860px) {
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .video-section {
+      padding: 4rem 0;
+      background: black;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .video-item {
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .video-item iframe {
+      display: block;
+      width: 100%;
+      height: 250px;
+      border: none;
+    }
+
+    @media (max-width: 768px) {
+      .video-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .video-item iframe {
+        height: 200px;
+      }
+    }
+
+    .section .section-overlay {
+      background: rgba(0, 0, 0, 0.30);
+    }
+
+    .footer {
+      background: black;
+      padding: 3rem 0 2rem;
+    }
+
+    .footer-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 1.85rem;
+      color: #fff;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-tagline {
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 0.95rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .footer-link {
+      color: rgba(255, 255, 255, 0.42);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 300;
+      transition: color 0.2s ease;
+    }
+
+    .footer-link:hover {
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .footer-bottom {
+      color: rgba(255, 255, 255, 0.38);
+      font-size: 0.82rem;
+    }
+
+    @keyframes hero-glow {
+      0% {
+        filter: brightness(0.72) saturate(1.00);
+      }
+
+      25% {
+        filter: brightness(0.78) saturate(1.10);
+      }
+
+      55% {
+        filter: brightness(0.74) saturate(1.05);
+      }
+
+      78% {
+        filter: brightness(0.80) saturate(1.14);
+      }
+
+      100% {
+        filter: brightness(0.72) saturate(1.00);
+      }
+    }
+
+    @media (max-width: 1024px) {
+
+      .grid-cols-3,
+      .grid-cols-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-content {
+        padding: 6rem 1rem 4rem;
+      }
+
+      .hero-title {
+        font-size: clamp(2.8rem, 10vw, 4.25rem);
+      }
+
+      .navbar-pill {
+        height: 3.25rem;
+        gap: 0.75rem;
+        padding: 0 0.9rem;
+      }
+
+      .navbar-links {
+        gap: 1rem;
+      }
+
+      .nav-link {
+        font-size: 0.8rem;
+      }
+
+      .cta {
+        padding: 5rem 0;
+      }
+
+      .section {
+        padding: 4.5rem 0;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .navbar {
+        top: 0.75rem;
+        padding: 0 0.75rem;
+      }
+
+      .hero {
+        padding-bottom: 4rem;
+      }
+
+      .hero-content {
+        padding: 5rem 0.75rem 3rem;
+      }
+
+      .hero-buttons,
+      .cta-actions {
+        flex-direction: column;
+      }
+
+      .btn-primary,
+      .btn-secondary,
+      .cta-button {
+        width: 100%;
+      }
+
+      .section-title {
+        font-size: 2.6rem;
+      }
+
+      .section-subtitle {
+        font-size: 0.98rem;
+      }
+
+      .footer-links {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+    }
+  </style>
+  <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js"></script>
+</head>
+
+<body>
+
+  <!-- Grain Overlay -->
+  <div class="grain-overlay"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-pill">
+      <a href="#hero" class="navbar-brand">INTRIGUE STUDIOS</a>
+      <div class="navbar-links">
+        <a href="#services" class="nav-link">Services</a>
+        <a href="#about" class="nav-link">Work</a>
+        <a href="#process" class="nav-link">Process</a>
+        <a href="#results" class="nav-link">Pricing</a>
+      </div>
+      <a href="https://calendly.com/intriguestudios" target="_blank" rel="noopener noreferrer" class="nav-action">Get
+        Started</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="pulse"
+          style="display: inline-block; width: 8px; height: 8px; background: #a78bfa; border-radius: 50%;"></span>
+        AI Systems Live · Real Results Now
+      </div>
+
+      <h1 class="hero-title">
+        Build AI systems that<br>
+        <span class="highlight">multiply your clients</span><br>
+        <span style="color: rgba(255,255,255,0.8);">without adding headcount</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Automate lead capture, qualify prospects 24/7, generate scroll-stopping AI video content, and handle customer
+        conversations at scale. Works for real estate, service businesses, gyms, restaurants, and more.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="https://calendly.com/intriguestudios" target="_blank" rel="noopener noreferrer"
+          class="hero-button btn-primary">👉 Book Free Demo</a>
+        <a href="#services" class="hero-button btn-secondary">View Services</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="section" id="services">
+    <div class="section-background" style="background-image: url('features-bg.png');"></div>
+    <div class="section-overlay"></div>
+    <div class="section-content">
+      <div class="container">
+        <div class="section-badge">Your AI Toolkit</div>
+        <h2 class="section-title">Three powerful systems to<br><span style="color: rgba(255,255,255,0.8);">scale your
+            business</span></h2>
+        <p class="section-subtitle">
+          Designed to work together. Each system is battle-tested and delivering real results right now. Pick one,
+          combine them, or use all three — it's your choice.
+        </p>
+
+        <div class="grid grid-cols-3">
+          <div class="card">
+            <div class="card-icon">📞</div>
+            <h3 class="card-title">AI Receptionist & Voice</h3>
+            <p class="card-description">
+              Answer every call instantly. Qualify leads, book appointments, and update your calendar automatically —
+              even at 2am. Sounds human, acts intelligent.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">🎬</div>
+            <h3 class="card-title">AI UGC & Video Content</h3>
+            <p class="card-description">
+              Generate scroll-stopping, high-converting video content at scale. AI-created UGC ads, testimonials,
+              product demos — tested and optimized for Meta, TikTok, and YouTube ads.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">📈</div>
+            <h3 class="card-title">Lead Automation System</h3>
+            <p class="card-description">
+              Scrape and qualify leads automatically. Sync them to your CRM, trigger follow-ups, and build pipelines
+              that fill themselves. More leads, zero manual work.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Video Showcase Section -->
+  <section class="video-section">
+    <div class="container">
+      <div class="video-grid">
+        <div class="video-item">
+          <iframe src="https://player.vimeo.com/video/1191830570" width="100%" height="250" frameborder="0"
+            allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="video-item">
+          <iframe src="https://player.vimeo.com/video/1182485926" width="100%" height="250" frameborder="0"
+            allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="video-item">
+          <iframe src="https://player.vimeo.com/video/1191833322" width="100%" height="250" frameborder="0"
+            allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="section" id="about">
+    <div class="section-background" style="background-image: url('intro-bg.png');"></div>
+    <div class="section-overlay"></div>
+    <div class="section-content">
+      <div class="container">
+        <div class="section-badge">Who We Work With</div>
+        <h2 class="section-title">Is this<br><span style="color: rgba(255,255,255,0.8);">for you?</span></h2>
+        <p class="section-subtitle">
+          We build for businesses that lose money every time a lead goes unanswered. Sound familiar?
+        </p>
+
+        <div class="grid grid-cols-2">
+          <div class="card">
+            <div class="card-icon">🏡</div>
+            <h3 class="card-title">Real Estate Agents</h3>
+            <p class="card-description">
+              You're manually chasing leads. Response times are slow. Half your leads go cold before you call back.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">💪</div>
+            <h3 class="card-title">Gyms & Coaches</h3>
+            <p class="card-description">
+              Prospects enquire at odd hours. You miss them. They sign up with your competitor down the street.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">🍽️</div>
+            <h3 class="card-title">Restaurants & Hospitality</h3>
+            <p class="card-description">
+              You're buried in reservation requests, catering inquiries, and event bookings. Manual chaos.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">🔧</div>
+            <h3 class="card-title">Service Businesses</h3>
+            <p class="card-description">
+              Calls come in while you're on-site. You miss them. That's lost revenue, every single time.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process Section -->
+  <section class="section" id="process">
+    <div class="section-background" style="background-image: url('section3-bg.png');"></div>
+    <div class="section-overlay"></div>
+    <div class="section-content">
+      <div class="container">
+        <div class="section-badge">The Process</div>
+        <h2 class="section-title">From consultation to<br><span style="color: rgba(255,255,255,0.8);">live system</span>
+        </h2>
+        <p class="section-subtitle">
+          No lengthy contracts. No six-month waits. We move fast because you need results now.
+        </p>
+
+        <div class="grid grid-cols-3">
+          <div class="card">
+            <div style="font-size: 3rem; color: rgba(167,139,250,0.5); font-weight: bold; margin-bottom: 1rem;">01</div>
+            <h3 class="card-title">Strategy Call</h3>
+            <p class="card-description">
+              30-minute deep dive into your business. We identify exactly where AI automation will have the biggest
+              impact and fastest ROI.
+            </p>
+          </div>
+
+          <div class="card">
+            <div style="font-size: 3rem; color: rgba(167,139,250,0.5); font-weight: bold; margin-bottom: 1rem;">02</div>
+            <h3 class="card-title">Build & Test</h3>
+            <p class="card-description">
+              We engineer your complete AI system — voice agents, automations, integrations — and rigorously test
+              everything before launch.
+            </p>
+          </div>
+
+          <div class="card">
+            <div style="font-size: 3rem; color: rgba(167,139,250,0.5); font-weight: bold; margin-bottom: 1rem;">03</div>
+            <h3 class="card-title">Go Live & Scale</h3>
+            <p class="card-description">
+              Your system goes live and starts capturing leads, qualifying prospects, and generating results
+              immediately. We optimize continuously.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results Section -->
+  <section class="section" id="results">
+    <div class="container">
+      <div class="section-badge">Proven Results</div>
+      <h2 class="section-title">Real metrics from<br><span style="color: rgba(255,255,255,0.8);">live systems</span>
+      </h2>
+      <p class="section-subtitle">
+        These aren't projections. They're actual results from businesses like yours running AI automation right now.
+      </p>
+
+      <div class="grid grid-cols-3">
+        <div class="card" style="text-align: center;">
+          <div style="font-size: 3rem; color: #34d399; font-weight: bold; margin-bottom: 1rem;">100%</div>
+          <h3 class="card-title">Lead Capture Rate</h3>
+          <p class="card-description">
+            Zero leads fall through the cracks. Every enquiry is logged, qualified, and acted upon.
+          </p>
+        </div>
+
+        <div class="card" style="text-align: center;">
+          <div style="font-size: 3rem; color: #34d399; font-weight: bold; margin-bottom: 1rem;">&lt;30s</div>
+          <h3 class="card-title">First Response Time</h3>
+          <p class="card-description">
+            AI responds to every lead faster than you can read the message. Day or night.
+          </p>
+        </div>
+
+        <div class="card" style="text-align: center;">
+          <div style="font-size: 3rem; color: #34d399; font-weight: bold; margin-bottom: 1rem;">24/7</div>
+          <h3 class="card-title">Always On</h3>
+          <p class="card-description">
+            Your AI never sleeps, takes lunch, or goes on holiday. Leads captured while you rest.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta" id="book">
+    <div class="cta-content container">
+      <div class="section-badge">Start Your AI Automation Journey</div>
+      <h2 class="cta-title">Let's automate<br><span style="color: rgba(255,255,255,0.8);">your business</span></h2>
+      <p class="section-subtitle">
+        Fill in the form below. We'll review your business within 24 hours and book your free 30-minute strategy call —
+        no pitch, just a clear roadmap for what AI can do for your specific industry.
+      </p>
+
+      <!-- Booking Form -->
+      <div class="form-container">
+        <form id="bookingForm" aria-label="Intrigue Studios booking form">
+          <div class="form-group">
+            <label for="name">Your Name</label>
+            <input class="form-input" type="text" id="name" name="name" autocomplete="name"
+              placeholder="e.g. James Kamau" required>
+          </div>
+
+          <div class="form-group">
+            <label for="business">Business Name</label>
+            <input class="form-input" type="text" id="business" name="business" autocomplete="organization"
+              placeholder="e.g. Oceanview Properties" required>
+          </div>
+
+          <div class="form-group">
+            <label for="industry">Your Industry</label>
+            <select class="form-input" id="industry" name="industry" required>
+              <option value="">Select your industry</option>
+              <option>Real Estate (Agents/Agencies)</option>
+              <option>Yacht / Jet Brokers</option>
+              <option>Gym / Coaching / Fitness</option>
+              <option>Restaurant / Hospitality</option>
+              <option>Service Business (Plumbing, HVAC, etc)</option>
+              <option>E-Commerce / Online Business</option>
+              <option>Agency / Professional Services</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input class="form-input" type="email" id="email" name="email" autocomplete="email"
+              placeholder="you@yourbusiness.com" required>
+          </div>
+
+          <button type="submit" class="form-submit">👉 Continue to Book My Call</button>
+          <p id="bookingMessage" class="form-note" style="margin-top: 1rem; opacity: 0; transition: opacity 0.3s ease;">
+            Free 30-min call · No obligation · Setup advice included</p>
+        </form>
+        <p class="form-note" style="margin-top: 1.5rem;">Or schedule directly at <button
+             onclick="openCalendlyPopup()"
+            style="color: #a78bfa; text-decoration: underline;">calendly.com/letionketienya/project-insight</button>.</p>
+
+        <div class="calendly-popup" id="calendly-popup">
+          <div class="popup-content">
+            <button class="popup-close" id="closeBtn" onclick="closeCalendlyPopup()">&times;</button>
+            <div class="calendly-inline-widget" data-url="https://calendly.com/letionketienya/project-insight" data-resize="true"
+              style="min-width:320px;height:700px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Privacy & Terms Extras -->
+  <section class="info-block" id="privacy">
+    <div class="info-content container">
+      <div class="info-grid">
+        <div class="info-card">
+          <h3 class="info-title">Extras Included</h3>
+          <ul class="info-list">
+            <li>Free 30-minute Project Insight call</li>
+            <li>Custom AI automation recommendations</li>
+            <li>Lead capture, voice AI, and UGC strategy</li>
+            <li>Fast follow-up and clear next steps</li>
+          </ul>
+        </div>
+        <div class="info-card" id="terms">
+          <h3 class="info-title">Data Protection</h3>
+          <p class="info-copy">Your details are used only to schedule your consultation and prepare your insight
+            session. We do not sell your information, and we protect it in line with modern privacy best practices.</p>
+          <p class="info-copy">By submitting this form, you agree to receive scheduling details and follow-up
+            communications from Intrigue Studios. You can opt out anytime.</p>
+        </div>
+      </div>
+      <p class="info-note">Need a full privacy policy or terms page? This section can point to your published Legal
+        pages once you launch.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <div class="footer-logo">INTRIGUE STUDIOS</div>
+        <div class="footer-tagline">AI Automation · Lead Generation · Voice AI · UGC Content · Web Design · Available
+          Globally</div>
+      </div>
+
+      <div class="footer-links">
+        <div class="footer-section">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="#services">AI Receptionist</a></li>
+            <li><a href="#services">Video Content</a></li>
+            <li><a href="#services">Lead Automation</a></li>
+            <li><a href="#contact">Consultation</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#process">Process</a></li>
+            <li><a href="#results">Results</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#contact">Help Center</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+            <li><a href="#privacy">Privacy</a></li>
+            <li><a href="#terms">Terms</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="#">LinkedIn</a></li>
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">YouTube</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2025 INTRIGUE STUDIOS · Nairobi, Germany · Available Globally</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https​:​//assets.​calendly.c​om/assets/​external/w​idget.js" type="text/javascript"></script>
+
+  <script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Form submission
+    const bookingForm = document.getElementById('bookingForm');
+    const bookingMessage = document.getElementById('bookingMessage');
+    if (bookingForm) {
+      bookingForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const nameField = document.getElementById('name');
+        const businessField = document.getElementById('business');
+        const industryField = document.getElementById('industry');
+        const emailField = document.getElementById('email');
+
+        const name = nameField.value.trim();
+        const business = businessField.value.trim();
+        const industry = industryField.value;
+        const email = emailField.value.trim();
+
+        if (!name || !business || !industry || !email) {
+          bookingMessage.textContent = 'Please complete every field before booking your call.';
+          bookingMessage.style.color = '#f87171';
+          bookingMessage.style.opacity = '1';
+          return;
+        }
+
+        const prefillParams = new URLSearchParams({
+          name,
+          email,
+          a1: business,
+          a2: industry,
+        });
+
+        const calendlyUrl = `https://calendly.com/letionketienya/project-insight?${prefillParams.toString()}`;
+        window.open(calendlyUrl, '_blank', 'height=700,resizable=0,scrollbars=1');
+
+        bookingMessage.textContent = 'Nice! Calendly is opening in a new tab with your details prefilled. Choose your time!';
+        bookingMessage.style.color = '#a78bfa';
+        bookingMessage.style.opacity = '1';
+
+        console.log('Booking submission:', { name, business, industry, email });
+      });
+    }
+
+    // direct calendly popup
+
+    function openCalendlyPopup() {
+      console.log("fired")
+      const popup = document.getElementById("calendly-popup");
+      popup.style.display = "flex";
+    }
+
+    function closeCalendlyPopup() {
+      const popup = document.getElementById("calendly-popup");
+      popup.style.display="none";
+    }
+
+    Calendly.initInlineWidget({
+      url: 'https://calendly.com/letionketienya/project-insight',
+      parentElement: document.getElementById('calendly-embed'),
+      resize: true
+    });
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
+
+</body>
+
+</html>

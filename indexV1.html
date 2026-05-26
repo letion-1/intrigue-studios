@@ -497,9 +497,6 @@
             .video-thumbnail img {
                 filter:none;
             }
-            .play-button {
-                background: rgba(138, 138, 138, 0.777);
-            }
         }
 
         /* Forms */
@@ -614,68 +611,6 @@
                 opacity: 1;
                 transform: scale(1);
             }
-        }
-
-        /* Privacy Popup */
-        .privacy-popup {
-            position: fixed;
-            inset: 0;
-            background-color: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            padding: 20px;
-        }
-
-        .privacy-content {
-            background-color: #050505;
-            border: 1px solid rgba(255, 255, 255, 0.09);
-            padding: 32px 24px;
-            border-radius: 12px;
-            width: 95%;
-            max-width: 800px;
-            max-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            animation: fadeInScale 0.3s ease-out forwards;
-            color: var(--text);
-        }
-
-        .privacy-content h2 {
-            font-family: 'Instrument Serif', serif;
-            font-style: italic;
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .privacy-text {
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            padding-right: 10px;
-            margin-bottom: 1rem;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: var(--muted);
-        }
-
-        .privacy-text h3 {
-            color: #fff;
-            font-size: 1.1rem;
-            margin: 1.5rem 0 0.5rem;
-            font-family: 'Barlow', sans-serif;
-        }
-        
-        .privacy-text ul {
-            margin-left: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .privacy-text p {
-            margin-bottom: 1rem;
         }
 
         /* Footer */
@@ -1094,97 +1029,6 @@
         </div>
     </div>
 
-    <div class="privacy-popup" id="privacyPopup">
-        <div class="privacy-content">
-            <h2>DATA AND PRIVACY POLICY</h2>
-            <div class="privacy-text">
-                <p>At Intrigue Studios, we value your privacy and are committed to protecting your personal data in accordance with the General Data Protection Regulation (GDPR) and applicable German data protection laws.</p>
-                
-                <h3>1. INFORMATION WE COLLECT</h3>
-                <p>We may collect the following information through our website, forms, or communication channels:</p>
-                <ul>
-                    <li>Name</li>
-                    <li>Email address</li>
-                    <li>Phone number</li>
-                    <li>Company information</li>
-                    <li>Booking details</li>
-                    <li>Website usage data</li>
-                    <li>IP address and browser information</li>
-                </ul>
-                <p>Information is collected only when voluntarily submitted or automatically processed through website functionality.</p>
-
-                <h3>2. PURPOSE OF DATA PROCESSING</h3>
-                <p>We process personal data for purposes including:</p>
-                <ul>
-                    <li>Responding to inquiries</li>
-                    <li>Providing requested services</li>
-                    <li>Scheduling consultations or bookings</li>
-                    <li>Improving website functionality</li>
-                    <li>Marketing and communication</li>
-                    <li>Analytics and performance tracking</li>
-                </ul>
-
-                <h3>3. LEGAL BASIS FOR PROCESSING</h3>
-                <p>Data processing is carried out in accordance with Article 6 GDPR, including:</p>
-                <ul>
-                    <li>consent</li>
-                    <li>contractual necessity</li>
-                    <li>legitimate business interests</li>
-                    <li>legal obligations</li>
-                </ul>
-
-                <h3>4. COOKIES AND TRACKING TECHNOLOGIES</h3>
-                <p>Our website may use cookies and similar technologies to:</p>
-                <ul>
-                    <li>improve user experience</li>
-                    <li>analyze website traffic</li>
-                    <li>support advertising and remarketing campaigns</li>
-                </ul>
-                <p>Where legally required, users will be asked for consent before non-essential cookies are activated.</p>
-
-                <h3>5. THIRD-PARTY SERVICES</h3>
-                <p>We may use third-party providers including:</p>
-                <ul>
-                    <li>Google Analytics</li>
-                    <li>Meta/Facebook Pixel</li>
-                    <li>Calendly</li>
-                    <li>Hosting providers</li>
-                    <li>AI and automation platforms</li>
-                    <li>CRM systems</li>
-                </ul>
-                <p>These providers may process data in accordance with their own privacy policies.</p>
-
-                <h3>6. DATA STORAGE AND SECURITY</h3>
-                <p>We implement reasonable technical and organizational measures to protect personal data against unauthorized access, disclosure, or misuse.</p>
-                <p>However, no internet transmission can be guaranteed to be completely secure.</p>
-
-                <h3>7. USER RIGHTS UNDER GDPR</h3>
-                <p>Users have the right to:</p>
-                <ul>
-                    <li>access their data</li>
-                    <li>correct inaccurate data</li>
-                    <li>request deletion of data</li>
-                    <li>restrict processing</li>
-                    <li>withdraw consent</li>
-                    <li>request data portability</li>
-                    <li>lodge complaints with a supervisory authority</li>
-                </ul>
-
-                <h3>8. CONTACT</h3>
-                <p>For questions regarding data protection or privacy-related requests, contact:</p>
-                <p>
-                    Intrigue Studios<br>
-                    Email: [YOUR EMAIL]<br>
-                    Address: [YOUR BUSINESS ADDRESS]
-                </p>
-
-                <h3>9. CHANGES TO THIS POLICY</h3>
-                <p>We reserve the right to update this Privacy Policy at any time to reflect legal, technical, or operational changes.</p>
-            </div>
-            <button class="form-submit" id="acceptPrivacyBtn" style="margin-top: 1.5rem;">I Accept</button>
-        </div>
-    </div>
-
     <section class="about-me" id="about-me">
         <div class="container">
             <div class="about-grid">
@@ -1334,7 +1178,7 @@
             }
         });
 
-        // 5. Video Thumbnail to iFrame Swapper
+        // Video Thumbnail to iFrame Swapper
         document.querySelectorAll('.video-item').forEach(item => {
             item.addEventListener('click', function () {
                 const videoUrl = this.getAttribute('data-video');
@@ -1349,27 +1193,6 @@
                 // Clear out the thumbnail and button, insert the playing video
                 this.innerHTML = '';
                 this.appendChild(iframe);
-            });
-        });
-
-        // 6. Privacy Popup Logic
-        document.addEventListener('DOMContentLoaded', () => {
-            const privacyPopup = document.getElementById('privacyPopup');
-            const acceptBtn = document.getElementById('acceptPrivacyBtn');
-
-            // Check if user has already accepted the privacy policy
-            if (!localStorage.getItem('privacyAccepted')) {
-                // Show popup if not accepted
-                privacyPopup.style.display = 'flex';
-                document.body.style.overflow = 'hidden'; // Prevent background scrolling
-            }
-
-            acceptBtn.addEventListener('click', () => {
-                // Save acceptance in localStorage
-                localStorage.setItem('privacyAccepted', 'true');
-                // Hide popup and restore scrolling
-                privacyPopup.style.display = 'none';
-                document.body.style.overflow = '';
             });
         });
     </script>
