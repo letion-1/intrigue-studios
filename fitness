@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Fitness Client Delivery — Intrigue Studios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --text: #ffffff;
+    --muted: rgba(255,255,255,0.72);
+    --accent: #a78bfa;
+    --accent-2: #34d399;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    color: var(--text);
+    background: black;
+    overflow-x: hidden;
+  }
+  a, button { font: inherit; }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+
+  .grain-overlay {
+    position: fixed; inset: 0; pointer-events: none; z-index: 120; opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    background-size: 128px 128px;
+  }
+
+  /* NAVBAR */
+  .navbar {
+    position: fixed; top: 1rem; left: 50%; transform: translateX(-50%);
+    width: min(100%, 56rem); padding: 0 1rem; z-index: 110; display: flex; justify-content: center;
+  }
+  .navbar-pill {
+    width: 100%; height: 3.5rem;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.16);
+    backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    border-radius: 9999px; display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; padding: 0 1.25rem; box-shadow: 0 15px 45px rgba(0,0,0,0.22);
+  }
+  .navbar-brand {
+    font-family: 'Instrument Serif', serif; font-style: italic; font-size: 1.05rem;
+    color: #fff; text-decoration: none; letter-spacing: 0.08em;
+  }
+  .nav-action {
+    background: #fff; color: #000; border-radius: 9999px; padding: 0.85rem 1.4rem;
+    font-weight: 600; font-size: 0.875rem; text-decoration: none;
+    transition: transform 0.25s ease; border: none; cursor: pointer;
+  }
+  .nav-action:hover { transform: translateY(-2px); }
+
+  .section-badge {
+    display: inline-flex; font-family: 'Barlow', sans-serif; font-size: 0.75rem;
+    font-weight: 500; color: white; margin-bottom: 1rem; padding: 0.25rem 0.875rem;
+    border-radius: 9999px; border: 1px solid rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.06); letter-spacing: 0.12em; text-transform: uppercase;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative; min-height: 100vh; display: flex; align-items: center;
+    justify-content: center; padding: 0 1rem; overflow: hidden;
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at top right, rgba(167,139,250,0.12), transparent 30%),
+                radial-gradient(circle at bottom left, rgba(52,211,153,0.08), transparent 30%);
+  }
+  .hero-content {
+    position: relative; z-index: 10; max-width: 900px; text-align: center; padding: 8rem 0 5rem;
+  }
+  .live-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.78rem; font-weight: 500; color: white; margin-bottom: 1.5rem;
+    padding: 0.3rem 1rem; border-radius: 9999px;
+    border: 1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.06);
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .live-dot {
+    width: 7px; height: 7px; background: var(--accent-2); border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity:1; transform:scale(1); }
+    50% { opacity:0.4; transform:scale(0.8); }
+  }
+  .hero-title {
+    font-size: clamp(3rem, 7.5vw, 5.5rem); font-family: 'Instrument Serif', serif;
+    font-style: italic; font-weight: 300; line-height: 1.02; margin: 0.5rem auto 1.75rem; color: #fff;
+  }
+  .hero-subtitle {
+    font-size: 1.05rem; color: var(--muted); max-width: 44rem; margin: 0 auto 2.5rem; line-height: 1.75;
+  }
+  .hero-buttons { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    background: linear-gradient(135deg, #a78bfa, #34d399); color: #000;
+    border-radius: 9999px; padding: 1rem 2rem; font-weight: 600; text-decoration: none;
+    transition: all 0.3s ease; border: none; cursor: pointer;
+    box-shadow: 0 16px 45px rgba(167,139,250,0.24);
+  }
+  .btn-primary:hover { transform: translateY(-2px); }
+  .btn-secondary {
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.16);
+    color: #fff; border-radius: 9999px; padding: 1rem 2rem; font-weight: 600;
+    text-decoration: none; transition: all 0.3s ease;
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.14); }
+
+  /* SECTIONS */
+  .section { position: relative; padding: 6rem 0; background: black; z-index: 2; }
+  .section-title {
+    font-size: clamp(2.4rem, 5vw, 4rem); font-family: 'Instrument Serif', serif;
+    font-style: italic; font-weight: 300; line-height: 1.04;
+    text-align: center; margin: 0 auto 1rem; color: #fff;
+  }
+  .section-subtitle {
+    font-size: 1rem; color: var(--muted); text-align: center;
+    max-width: 44rem; margin: 0 auto 3rem; line-height: 1.75;
+  }
+
+  /* CARDS */
+  .grid { display: grid; gap: 1.75rem; }
+  .grid-cols-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .grid-cols-4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+  .card {
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 1.5rem; padding: 2rem; transition: transform 0.35s ease, background 0.35s ease;
+  }
+  .card:hover { transform: translateY(-4px); background: rgba(255,255,255,0.06); }
+  .card-icon {
+    width: 3rem; height: 3rem; border-radius: 1rem; display: grid; place-items: center;
+    margin-bottom: 1.2rem; background: rgba(255,255,255,0.08); font-size: 1.35rem;
+  }
+  .card-title { font-size: 1.15rem; font-weight: 500; margin-bottom: 0.85rem; color: #fff; }
+  .card-description { color: var(--muted); line-height: 1.6; font-size: 0.95rem; }
+
+  /* DELIVERABLE CARDS */
+  .deliverable-badge {
+    display: inline-block; margin-top: 1.2rem;
+    background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.25);
+    border-radius: 9999px; padding: 0.2rem 0.75rem;
+    font-size: 0.75rem; font-weight: 600; color: var(--accent-2); letter-spacing: 0.05em;
+  }
+
+  /* STEPS */
+  .steps-grid {
+    display: grid; grid-template-columns: repeat(4,1fr); gap: 1.75rem; margin-top: 3rem; position: relative;
+  }
+  .steps-grid::before {
+    content: ''; position: absolute; top: 28px; left: 12.5%; right: 12.5%; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(167,139,250,0.3), transparent);
+  }
+  .step { text-align: center; padding: 0 1rem; }
+  .step-num {
+    width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 1.2rem;
+    display: grid; place-items: center; position: relative; z-index: 1;
+    background: black; border: 1px solid rgba(167,139,250,0.35);
+    font-size: 1.1rem; font-weight: 600; color: var(--accent);
+    font-family: 'Instrument Serif', serif; font-style: italic;
+  }
+  .step-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.6rem; }
+  .step-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+  /* COACH STATS */
+  .coach-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; margin-top: 3rem;
+  }
+  .check-list { list-style: none; display: flex; flex-direction: column; gap: 1.5rem; }
+  .check-list li { display: flex; gap: 1rem; align-items: flex-start; }
+  .check-icon {
+    width: 24px; height: 24px; border-radius: 6px; flex-shrink: 0; margin-top: 2px;
+    background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.25);
+    display: grid; place-items: center; font-size: 11px; color: var(--accent-2);
+  }
+  .check-list li strong { display: block; font-weight: 600; font-size: 0.95rem; margin-bottom: 0.3rem; }
+  .check-list li span { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+  .stat-card {
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 1.5rem; padding: 2.5rem; display: flex; flex-direction: column; gap: 2rem;
+  }
+  .stat-num {
+    font-size: 3rem; font-family: 'Instrument Serif', serif; font-style: italic;
+    color: var(--accent-2); line-height: 1; margin-bottom: 0.4rem;
+  }
+  .stat-label { font-size: 0.875rem; color: var(--muted); }
+
+  /* PRICING */
+  .pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.75rem; margin-top: 3rem; }
+  .pricing-card {
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 1.5rem; padding: 2rem; position: relative;
+  }
+  .pricing-card.featured {
+    background: rgba(167,139,250,0.06); border-color: rgba(167,139,250,0.3);
+  }
+  .featured-badge {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(135deg, #a78bfa, #34d399); color: #000;
+    font-size: 0.65rem; font-weight: 800; letter-spacing: 0.15em;
+    padding: 3px 14px; border-radius: 9999px; white-space: nowrap;
+  }
+  .plan-name { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+  .plan-price {
+    font-size: 2.5rem; font-family: 'Instrument Serif', serif; font-style: italic;
+    line-height: 1; margin-bottom: 0.25rem;
+  }
+  .plan-price span { font-size: 1rem; color: var(--muted); font-family: 'Barlow', sans-serif; font-style: normal; }
+  .plan-sub { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem; }
+  .plan-divider { height: 1px; background: rgba(255,255,255,0.08); margin-bottom: 1.5rem; }
+  .plan-features { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem; }
+  .plan-features li { font-size: 0.875rem; color: var(--muted); display: flex; gap: 0.6rem; }
+  .plan-features li::before { content: '✓'; color: var(--accent-2); font-weight: 700; flex-shrink: 0; }
+  .plan-btn {
+    display: block; text-align: center; padding: 0.9rem; border-radius: 9999px;
+    font-weight: 600; font-size: 0.9rem; text-decoration: none; cursor: pointer; border: none;
+    transition: transform 0.25s ease, opacity 0.25s;
+  }
+  .plan-btn:hover { transform: translateY(-2px); opacity: 0.9; }
+  .plan-btn.outline { border: 1px solid rgba(255,255,255,0.16); color: #fff; background: rgba(255,255,255,0.06); }
+  .plan-btn.filled { background: linear-gradient(135deg, #a78bfa, #34d399); color: #000; }
+
+  /* CTA */
+  .cta-section {
+    padding: 6rem 0; text-align: center; position: relative; overflow: hidden;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .cta-section::before {
+    content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(167,139,250,0.06) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .cta-inner { max-width: 600px; margin: 0 auto; position: relative; }
+  .cta-inner .section-title { margin-bottom: 1rem; }
+
+  /* FOOTER */
+  .footer {
+    background: #050505; padding: 4rem 0 2rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .footer-nav {
+    display: flex; flex-direction: column; gap: 3rem;
+    text-align: center; margin-bottom: 3rem;
+  }
+  .footer-nav-group h4 { color: #fff; font-size: 1.15rem; font-weight: 600; margin-bottom: 1.5rem; }
+  .footer-nav-group ul { list-style: none; padding: 0; }
+  .footer-nav-group ul li { margin-bottom: 1rem; }
+  .footer-nav-group ul a { color: rgba(255,255,255,0.65); text-decoration: none; font-size: 0.95rem; transition: color 0.2s; }
+  .footer-nav-group ul a:hover { color: #fff; }
+  .footer-bottom {
+    text-align: center; color: rgba(255,255,255,0.3); font-size: 0.85rem;
+    border-top: 1px solid rgba(255,255,255,0.05); padding-top: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .footer-nav { flex-direction: row; justify-content: space-evenly; text-align: left; }
+  }
+  @media (max-width: 1024px) {
+    .grid-cols-3, .grid-cols-4, .pricing-grid, .coach-grid, .steps-grid { grid-template-columns: 1fr; }
+    .steps-grid::before { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grain-overlay"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="navbar-pill">
+    <a href="https://intriguestudios.de" class="navbar-brand">INTRIGUE STUDIOS</a>
+    <a href="https://intriguestudios.de/#results" class="nav-action">Book Free Call</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="live-badge">
+      <span class="live-dot"></span>
+      For Gym Coaches &amp; Personal Trainers
+    </div>
+    <h1 class="hero-title">
+      Your clients get their plan.<br>
+      <span style="color: #a78bfa;">You get your time back.</span>
+    </h1>
+    <p class="hero-subtitle">
+      The moment a client fills in your intake form, our AI builds their personalised workout plan, nutrition guide, and dream body vision video — and delivers everything to their inbox. Automatically. In minutes.
+    </p>
+    <div class="hero-buttons">
+      <a href="https://intriguestudios.de/#results" class="btn-primary">👉 Book a Free Strategy Call</a>
+      <a href="#how-it-works" class="btn-secondary">See How It Works</a>
+    </div>
+    <p style="margin-top:1.5rem; font-size:0.85rem; color:var(--muted);">No technical setup required. We build and deploy everything for you.</p>
+  </div>
+</section>
+
+<!-- WHAT CLIENTS RECEIVE -->
+<section class="section">
+  <div class="container">
+    <div style="text-align:center;">
+      <div class="section-badge">What Your Clients Receive</div>
+      <h2 class="section-title">Three deliverables.<br>Zero manual work.</h2>
+      <p class="section-subtitle">Every new client gets all three automatically — the moment they submit your intake form.</p>
+    </div>
+    <div class="grid grid-cols-3">
+      <div class="card">
+        <div class="card-icon">💪</div>
+        <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.2em;color:var(--accent);text-transform:uppercase;margin-bottom:0.5rem;">Deliverable 01</div>
+        <h3 class="card-title">4-Week Workout Plan</h3>
+        <p class="card-description">A fully personalised, day-by-day training programme built around the client's goals, fitness level, available equipment, and schedule. Delivered as a branded PDF.</p>
+        <span class="deliverable-badge">Delivered in &lt; 2 minutes</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">🥗</div>
+        <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.2em;color:var(--accent);text-transform:uppercase;margin-bottom:0.5rem;">Deliverable 02</div>
+        <h3 class="card-title">Nutrition Guide + Shopping List</h3>
+        <p class="card-description">A personalised 7-day meal plan with calorie targets, macro breakdown, and a full weekly shopping list — tailored to their dietary needs and body goal.</p>
+        <span class="deliverable-badge">Delivered in &lt; 2 minutes</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎬</div>
+        <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.2em;color:var(--accent);text-transform:uppercase;margin-bottom:0.5rem;">Deliverable 03</div>
+        <h3 class="card-title">AI Dream Body Vision Video</h3>
+        <p class="card-description">An AI-generated cinematic video using the client's uploaded photo — showing them what they're working towards. A powerful motivational tool no other coach is offering.</p>
+        <span class="deliverable-badge">Delivered in &lt; 10 minutes</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how-it-works" style="border-top:1px solid rgba(255,255,255,0.05);">
+  <div class="container">
+    <div style="text-align:center;">
+      <div class="section-badge">The Process</div>
+      <h2 class="section-title">From form submission<br>to full delivery in minutes.</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">Client fills your form</div>
+        <p class="step-desc">They submit goals, stats, and a photo through your branded intake form.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">AI builds their plan</div>
+        <p class="step-desc">Workout plan, nutrition guide, and shopping list generated in seconds.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">Video generates</div>
+        <p class="step-desc">Their dream body vision video renders in the background automatically.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-title">Client gets everything</div>
+        <p class="step-desc">Two emails land in their inbox — plans first, video minutes later.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT THE COACH GETS -->
+<section class="section" style="border-top:1px solid rgba(255,255,255,0.05);">
+  <div class="container">
+    <div class="section-badge">For You, The Coach</div>
+    <h2 class="section-title" style="text-align:left; margin:0 0 0.5rem;">Scale without hiring.</h2>
+    <p class="section-subtitle" style="text-align:left; margin:0 0 0;">You focus on coaching. The system handles everything else.</p>
+    <div class="coach-grid">
+      <ul class="check-list">
+        <li>
+          <div class="check-icon">✓</div>
+          <div><strong>Every client logged automatically</strong><span>Name, email, goals, PDFs, and video task — all saved to your CRM the moment they sign up.</span></div>
+        </li>
+        <li>
+          <div class="check-icon">✓</div>
+          <div><strong>You get notified instantly</strong><span>A coach notification email fires the moment a new client onboards — with their full profile and PDF links.</span></div>
+        </li>
+        <li>
+          <div class="check-icon">✓</div>
+          <div><strong>No manual plan writing</strong><span>Stop spending 2–3 hours writing plans per client. The AI does it in under 2 minutes, personalised every time.</span></div>
+        </li>
+        <li>
+          <div class="check-icon">✓</div>
+          <div><strong>Branded to your business</strong><span>Every PDF and email carries your brand. Clients experience a premium service from the first touchpoint.</span></div>
+        </li>
+        <li>
+          <div class="check-icon">✓</div>
+          <div><strong>Works while you sleep</strong><span>A client can sign up at 3am and receive their full package before you wake up.</span></div>
+        </li>
+      </ul>
+      <div class="stat-card">
+        <div><div class="stat-num">&lt; 2min</div><div class="stat-label">From form submission to client receiving their plan</div></div>
+        <div><div class="stat-num">0hrs</div><div class="stat-label">Spent writing plans manually per client</div></div>
+        <div><div class="stat-num">24/7</div><div class="stat-label">Your onboarding system runs without you</div></div>
+        <div><div class="stat-num">3</div><div class="stat-label">Premium deliverables every client receives automatically</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section" style="border-top:1px solid rgba(255,255,255,0.05);">
+  <div class="container">
+    <div style="text-align:center;">
+      <div class="section-badge">Investment</div>
+      <h2 class="section-title">One system. Yours forever.</h2>
+      <p class="section-subtitle">We build, test, and hand it over. No subscriptions to us — you own the system.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="plan-name">Starter</div>
+        <div class="plan-price">€1,500 <span>one-time</span></div>
+        <div class="plan-sub">Full system, fully built</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          <li>Intake form setup</li>
+          <li>AI workout plan generation</li>
+          <li>AI nutrition guide generation</li>
+          <li>Branded PDF delivery</li>
+          <li>Client email automation</li>
+          <li>Google Sheets CRM</li>
+          <li>Dream body video generation</li>
+          <li>2 weeks post-launch support</li>
+        </ul>
+        <a href="https://intriguestudios.de/#results" class="plan-btn outline">Book a Call →</a>
+      </div>
+      <div class="pricing-card featured">
+        <div class="featured-badge">MOST POPULAR</div>
+        <div class="plan-name">Growth</div>
+        <div class="plan-price">€3,500 <span>+ €297/mo</span></div>
+        <div class="plan-sub">Full system + ongoing optimisation</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          <li>Everything in Starter</li>
+          <li>Weekly check-in automation</li>
+          <li>WhatsApp delivery integration</li>
+          <li>Custom branded domain</li>
+          <li>Monthly performance review</li>
+          <li>Priority support</li>
+          <li>System upgrades included</li>
+          <li>Dedicated Slack channel</li>
+        </ul>
+        <a href="https://intriguestudios.de/#results" class="plan-btn filled">Book a Call →</a>
+      </div>
+      <div class="pricing-card">
+        <div class="plan-name">Scale</div>
+        <div class="plan-price">Custom</div>
+        <div class="plan-sub">For coaching businesses with 50+ clients/mo</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          <li>Everything in Growth</li>
+          <li>Multi-coach support</li>
+          <li>Custom AI model fine-tuning</li>
+          <li>Advanced analytics dashboard</li>
+          <li>White-label option</li>
+          <li>Dedicated account manager</li>
+          <li>SLA guarantee</li>
+        </ul>
+        <a href="https://intriguestudios.de/#results" class="plan-btn outline">Let's Talk →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <div class="section-badge">Get Started</div>
+    <h2 class="section-title">Ready to stop writing<br><span style="color:#a78bfa;">plans manually?</span></h2>
+    <p class="section-subtitle">Book a free 30-minute call. We'll show you exactly how the system works for your coaching business.</p>
+    <a href="https://intriguestudios.de/#results" class="btn-primary" style="font-size:1rem; padding:1.1rem 2.5rem;">👉 Book Your Free Call</a>
+    <p style="margin-top:1.25rem; font-size:0.85rem; color:var(--muted);">No commitment. No sales pressure. Just a demo.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-nav">
+      <div class="footer-nav-group">
+        <img src="intrigue-logo.jpeg" alt="Intrigue Studios" width="200">
+      </div>
+      <div class="footer-nav-group">
+        <h4>About us</h4>
+        <ul>
+          <li><a href="https://intriguestudios.de/#about-me">About INTRIGUE</a></li>
+          <li><a href="#">Team &amp; Culture</a></li>
+          <li><a href="#">Our partner network</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav-group">
+        <h4>Our services</h4>
+        <ul>
+          <li><a href="https://intriguestudios.de/#services">AI Fitness System</a></li>
+          <li><a href="https://intriguestudios.de/#services">AI Receptionist</a></li>
+          <li><a href="https://intriguestudios.de/#services">Lead Automation</a></li>
+          <li><a href="https://intriguestudios.de/#services">AI Video &amp; UGC</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 INTRIGUE STUDIOS. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
