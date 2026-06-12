@@ -263,8 +263,8 @@
         <h4>About us</h4>
         <ul>
           <li><a href="https://intriguestudios.de/#about-me">About INTRIGUE</a></li>
-          <li><a href="#">Team &amp; Culture</a></li>
-          <li><a href="#">Our partner network</a></li>
+          <li><a href="#" onclick="openPrivacyPopup();return false;">Data Privacy</a></li>
+          
         </ul>
       </div>
       <div class="footer-nav-group">
@@ -286,6 +286,69 @@
   function openCalendly() {
     Calendly.initPopupWidget({ url: 'https://calendly.com/letionketienya/project-insight' });
     return false;
+  }
+</script>
+
+
+<!-- PRIVACY POPUP -->
+<div id="privacyPopup" style="position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;justify-content:center;align-items:center;z-index:10000;padding:20px;">
+  <div style="background:#050505;border:1px solid rgba(255,255,255,0.09);padding:32px 24px;border-radius:12px;width:95%;max-width:800px;max-height:80vh;display:flex;flex-direction:column;color:#fff;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+      <h2 style="font-family:'Instrument Serif',serif;font-style:italic;font-size:2rem;">Data &amp; Privacy Policy</h2>
+      <button onclick="closePrivacyPopup()" style="background:none;border:none;color:#fff;font-size:2rem;cursor:pointer;line-height:1;">&times;</button>
+    </div>
+    <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;padding-right:10px;font-size:0.95rem;line-height:1.6;color:rgba(255,255,255,0.72);">
+      <p>At Intrigue Studios, we value your privacy and are committed to protecting your personal data in accordance with the General Data Protection Regulation (GDPR) and applicable German data protection laws.</p>
+
+      <h3 style="color:#fff;font-size:1.1rem;margin:1.5rem 0 0.5rem;">1. INFORMATION WE COLLECT</h3>
+      <p>We may collect the following information through our website, forms, or communication channels:</p>
+      <ul style="margin-left:1.5rem;margin-bottom:1rem;">
+        <li>Name</li><li>Email address</li><li>Phone number</li><li>Company information</li>
+        <li>Booking details</li><li>Website usage data</li><li>IP address and browser information</li>
+      </ul>
+      <p>Information is collected only when voluntarily submitted or automatically processed through website functionality.</p>
+
+      <h3 style="color:#fff;font-size:1.1rem;margin:1.5rem 0 0.5rem;">2. PURPOSE OF DATA PROCESSING</h3>
+      <p>We process personal data for purposes including:</p>
+      <ul style="margin-left:1.5rem;margin-bottom:1rem;">
+        <li>Responding to inquiries</li><li>Providing requested services</li><li>Scheduling consultations or bookings</li>
+        <li>Improving website functionality</li><li>Marketing and communication</li><li>Analytics and performance tracking</li>
+      </ul>
+
+      <h3 style="color:#fff;font-size:1.1rem;margin:1.5rem 0 0.5rem;">3. LEGAL BASIS FOR PROCESSING</h3>
+      <p>Data processing is carried out in accordance with Article 6 GDPR, including consent, contractual necessity, legitimate business interests, and legal obligations.</p>
+
+      <h3 style="color:#fff;font-size:1.1rem;margin:1.5rem 0 0.5rem;">4. COOKIES AND TRACKING TECHNOLOGIES</h3>
+      <p>Our website may use cookies and similar technologies to improve user experience, analyze website traffic, and support advertising and remarketing campaigns. Where legally required, users will be asked for consent before non-essential cookies are activated.</p>
+
+      <h3 style="color:#fff;font-size:1.1rem;margin:1.5rem 0 0.5rem;">5. THIRD-PARTY SERVICES</h3>
+      <p>We may use third-party providers including Google Analytics, Meta/Facebook Pixel, Calendly, hosting providers, AI and automation platforms, and CRM systems. These providers may process data in accordance with their own privacy policies.</p>
+
+      <h3 style="color:#fff;font-size:1.1rem;margin:1.5rem 0 0.5rem;">6. DATA STORAGE AND SECURITY</h3>
+      <p>We implement reasonable technical and organizational measures to protect personal data against unauthorized access, disclosure, or misuse. However, no internet transmission can be guaranteed to be completely secure.</p>
+
+      <h3 style="color:#fff;font-size:1.1rem;margin:1.5rem 0 0.5rem;">7. USER RIGHTS UNDER GDPR</h3>
+      <p>Users have the right to access their data, correct inaccurate data, request deletion, restrict processing, withdraw consent, request data portability, and lodge complaints with a supervisory authority.</p>
+
+      <h3 style="color:#fff;font-size:1.1rem;margin:1.5rem 0 0.5rem;">8. CONTACT</h3>
+      <p>For questions regarding data protection or privacy-related requests, contact:<br>
+      Intrigue Studios<br>Email: team@intriguestudios.de</p>
+
+      <h3 style="color:#fff;font-size:1.1rem;margin:1.5rem 0 0.5rem;">9. CHANGES TO THIS POLICY</h3>
+      <p>We reserve the right to update this Privacy Policy at any time to reflect legal, technical, or operational changes.</p>
+    </div>
+    <button onclick="closePrivacyPopup()" style="margin-top:1.5rem;padding:1rem 1.2rem;border:none;border-radius:9999px;background:linear-gradient(135deg,#a78bfa,#34d399);color:#000;font-weight:700;cursor:pointer;">Close</button>
+  </div>
+</div>
+
+<script>
+  function openPrivacyPopup() {
+    document.getElementById('privacyPopup').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+  function closePrivacyPopup() {
+    document.getElementById('privacyPopup').style.display = 'none';
+    document.body.style.overflow = '';
   }
 </script>
 
