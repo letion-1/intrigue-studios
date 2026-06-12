@@ -1,83 +1,139 @@
-<svg width="100%" viewBox="0 0 680 400" role="img" xmlns="http://www.w3.org/2000/svg">
-<rect width="680" height="400" fill="#1a0a00"/>
-<radialGradient id="ga" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="#f97316" stop-opacity="0.35"/><stop offset="100%" stop-color="#f97316" stop-opacity="0"/></radialGradient>
-<rect width="680" height="400" fill="url(#ga)"/>
-<radialGradient id="gb" cx="50%" cy="0%" r="50%"><stop offset="0%" stop-color="#fb923c" stop-opacity="0.45"/><stop offset="100%" stop-color="#fb923c" stop-opacity="0"/></radialGradient>
-<rect width="680" height="400" fill="url(#gb)"/>
-<radialGradient id="gr" cx="0%" cy="100%" r="50%"><stop offset="0%" stop-color="#dc2626" stop-opacity="0.3"/><stop offset="100%" stop-color="#dc2626" stop-opacity="0"/></radialGradient>
-<rect width="680" height="400" fill="url(#gr)"/>
-<radialGradient id="gy" cx="100%" cy="0%" r="40%"><stop offset="0%" stop-color="#fbbf24" stop-opacity="0.25"/><stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/></radialGradient>
-<rect width="680" height="400" fill="url(#gy)"/>
+<svg width="100%" height="100%" viewBox="0 0 680 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+<rect width="680" height="900" fill="#1a0a00"/>
+
+<!-- Amber glow center -->
+<radialGradient id="ga" cx="50%" cy="40%" r="60%">
+  <stop offset="0%" stop-color="#f97316" stop-opacity="0.4"/>
+  <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
+</radialGradient>
+<rect width="680" height="900" fill="url(#ga)"/>
+
+<!-- Bright amber top burst -->
+<radialGradient id="gb" cx="50%" cy="0%" r="55%">
+  <stop offset="0%" stop-color="#fb923c" stop-opacity="0.45"/>
+  <stop offset="100%" stop-color="#fb923c" stop-opacity="0"/>
+</radialGradient>
+<rect width="680" height="900" fill="url(#gb)"/>
+
+<!-- Deep red glow bottom left -->
+<radialGradient id="gr" cx="0%" cy="100%" r="50%">
+  <stop offset="0%" stop-color="#dc2626" stop-opacity="0.3"/>
+  <stop offset="100%" stop-color="#dc2626" stop-opacity="0"/>
+</radialGradient>
+<rect width="680" height="900" fill="url(#gr)"/>
+
+<!-- Yellow highlight top right -->
+<radialGradient id="gy" cx="100%" cy="0%" r="40%">
+  <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.25"/>
+  <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
+</radialGradient>
+<rect width="680" height="900" fill="url(#gy)"/>
+
+<!-- LARGE BARBELL CENTER -->
 <g opacity="0.3">
-  <rect x="120" y="193" width="440" height="14" rx="7" fill="#fbbf24"/>
-  <rect x="108" y="168" width="38" height="64" rx="6" fill="#f97316"/>
-  <rect x="152" y="176" width="24" height="48" rx="5" fill="#fb923c"/>
-  <rect x="504" y="176" width="24" height="48" rx="5" fill="#fb923c"/>
-  <rect x="534" y="168" width="38" height="64" rx="6" fill="#f97316"/>
-  <rect x="178" y="188" width="12" height="24" rx="3" fill="#fbbf24"/>
-  <rect x="490" y="188" width="12" height="24" rx="3" fill="#fbbf24"/>
+  <rect x="120" y="430" width="440" height="14" rx="7" fill="#fbbf24"/>
+  <rect x="108" y="405" width="38" height="64" rx="6" fill="#f97316"/>
+  <rect x="152" y="413" width="24" height="48" rx="5" fill="#fb923c"/>
+  <rect x="504" y="413" width="24" height="48" rx="5" fill="#fb923c"/>
+  <rect x="534" y="405" width="38" height="64" rx="6" fill="#f97316"/>
+  <rect x="178" y="425" width="12" height="24" rx="3" fill="#fbbf24"/>
+  <rect x="490" y="425" width="12" height="24" rx="3" fill="#fbbf24"/>
 </g>
-<g opacity="0.32" transform="rotate(-20 80 80)">
-  <rect x="38" y="74" width="84" height="8" rx="4" fill="#fbbf24"/>
-  <rect x="28" y="62" width="18" height="32" rx="4" fill="#f97316"/>
-  <rect x="48" y="66" width="12" height="24" rx="3" fill="#fb923c"/>
-  <rect x="100" y="66" width="12" height="24" rx="3" fill="#fb923c"/>
-  <rect x="114" y="62" width="18" height="32" rx="4" fill="#f97316"/>
-  <rect x="62" y="71" width="6" height="14" rx="2" fill="#fbbf24"/>
-  <rect x="92" y="71" width="6" height="14" rx="2" fill="#fbbf24"/>
+
+<!-- DUMBBELL top left -->
+<g opacity="0.32" transform="rotate(-20 80 160)">
+  <rect x="38" y="154" width="84" height="8" rx="4" fill="#fbbf24"/>
+  <rect x="28" y="142" width="18" height="32" rx="4" fill="#f97316"/>
+  <rect x="48" y="146" width="12" height="24" rx="3" fill="#fb923c"/>
+  <rect x="100" y="146" width="12" height="24" rx="3" fill="#fb923c"/>
+  <rect x="114" y="142" width="18" height="32" rx="4" fill="#f97316"/>
+  <rect x="62" y="151" width="6" height="14" rx="2" fill="#fbbf24"/>
+  <rect x="92" y="151" width="6" height="14" rx="2" fill="#fbbf24"/>
 </g>
-<g opacity="0.32" transform="rotate(15 580 70)">
-  <rect x="548" y="64" width="84" height="8" rx="4" fill="#fbbf24"/>
-  <rect x="538" y="52" width="18" height="32" rx="4" fill="#f97316"/>
-  <rect x="558" y="56" width="12" height="24" rx="3" fill="#fb923c"/>
-  <rect x="610" y="56" width="12" height="24" rx="3" fill="#fb923c"/>
-  <rect x="624" y="52" width="18" height="32" rx="4" fill="#f97316"/>
-  <rect x="572" y="61" width="6" height="14" rx="2" fill="#fbbf24"/>
-  <rect x="602" y="61" width="6" height="14" rx="2" fill="#fbbf24"/>
+
+<!-- DUMBBELL top right -->
+<g opacity="0.32" transform="rotate(15 580 140)">
+  <rect x="548" y="134" width="84" height="8" rx="4" fill="#fbbf24"/>
+  <rect x="538" y="122" width="18" height="32" rx="4" fill="#f97316"/>
+  <rect x="558" y="126" width="12" height="24" rx="3" fill="#fb923c"/>
+  <rect x="610" y="126" width="12" height="24" rx="3" fill="#fb923c"/>
+  <rect x="624" y="122" width="18" height="32" rx="4" fill="#f97316"/>
+  <rect x="572" y="131" width="6" height="14" rx="2" fill="#fbbf24"/>
+  <rect x="602" y="131" width="6" height="14" rx="2" fill="#fbbf24"/>
 </g>
+
+<!-- WEIGHT PLATE bottom left -->
 <g opacity="0.25">
-  <circle cx="90" cy="330" r="55" fill="none" stroke="#f97316" stroke-width="14"/>
-  <circle cx="90" cy="330" r="36" fill="none" stroke="#fb923c" stroke-width="4"/>
-  <circle cx="90" cy="330" r="10" fill="#fbbf24"/>
-  <line x1="90" y1="275" x2="90" y2="295" stroke="#fbbf24" stroke-width="3"/>
-  <line x1="90" y1="365" x2="90" y2="385" stroke="#fbbf24" stroke-width="3"/>
-  <line x1="35" y1="330" x2="55" y2="330" stroke="#fbbf24" stroke-width="3"/>
-  <line x1="125" y1="330" x2="145" y2="330" stroke="#fbbf24" stroke-width="3"/>
-  <line x1="51" y1="291" x2="65" y2="305" stroke="#fbbf24" stroke-width="3"/>
-  <line x1="115" y1="355" x2="129" y2="369" stroke="#fbbf24" stroke-width="3"/>
-  <line x1="129" y1="291" x2="115" y2="305" stroke="#fbbf24" stroke-width="3"/>
-  <line x1="65" y1="355" x2="51" y2="369" stroke="#fbbf24" stroke-width="3"/>
+  <circle cx="90" cy="700" r="65" fill="none" stroke="#f97316" stroke-width="16"/>
+  <circle cx="90" cy="700" r="42" fill="none" stroke="#fb923c" stroke-width="4"/>
+  <circle cx="90" cy="700" r="12" fill="#fbbf24"/>
+  <line x1="90" y1="635" x2="90" y2="658" stroke="#fbbf24" stroke-width="3"/>
+  <line x1="90" y1="742" x2="90" y2="765" stroke="#fbbf24" stroke-width="3"/>
+  <line x1="25" y1="700" x2="48" y2="700" stroke="#fbbf24" stroke-width="3"/>
+  <line x1="132" y1="700" x2="155" y2="700" stroke="#fbbf24" stroke-width="3"/>
+  <line x1="44" y1="654" x2="60" y2="670" stroke="#fbbf24" stroke-width="3"/>
+  <line x1="120" y1="730" x2="136" y2="746" stroke="#fbbf24" stroke-width="3"/>
+  <line x1="136" y1="654" x2="120" y2="670" stroke="#fbbf24" stroke-width="3"/>
+  <line x1="60" y1="730" x2="44" y2="746" stroke="#fbbf24" stroke-width="3"/>
 </g>
+
+<!-- WEIGHT PLATE bottom right -->
 <g opacity="0.22">
-  <circle cx="600" cy="340" r="48" fill="none" stroke="#dc2626" stroke-width="12"/>
-  <circle cx="600" cy="340" r="30" fill="none" stroke="#f97316" stroke-width="3"/>
-  <circle cx="600" cy="340" r="9" fill="#fbbf24"/>
-  <line x1="600" y1="292" x2="600" y2="310" stroke="#fbbf24" stroke-width="2.5"/>
-  <line x1="600" y1="370" x2="600" y2="388" stroke="#fbbf24" stroke-width="2.5"/>
-  <line x1="552" y1="340" x2="570" y2="340" stroke="#fbbf24" stroke-width="2.5"/>
-  <line x1="630" y1="340" x2="648" y2="340" stroke="#fbbf24" stroke-width="2.5"/>
+  <circle cx="600" cy="720" r="55" fill="none" stroke="#dc2626" stroke-width="14"/>
+  <circle cx="600" cy="720" r="35" fill="none" stroke="#f97316" stroke-width="3"/>
+  <circle cx="600" cy="720" r="10" fill="#fbbf24"/>
+  <line x1="600" y1="665" x2="600" y2="685" stroke="#fbbf24" stroke-width="2.5"/>
+  <line x1="600" y1="755" x2="600" y2="775" stroke="#fbbf24" stroke-width="2.5"/>
+  <line x1="545" y1="720" x2="565" y2="720" stroke="#fbbf24" stroke-width="2.5"/>
+  <line x1="635" y1="720" x2="655" y2="720" stroke="#fbbf24" stroke-width="2.5"/>
 </g>
+
+<!-- KETTLEBELL right middle -->
 <g opacity="0.26">
-  <path d="M590 260 Q590 228 620 228 Q650 228 650 260" fill="none" stroke="#fbbf24" stroke-width="10" stroke-linecap="round"/>
-  <ellipse cx="620" cy="278" rx="32" ry="28" fill="#f97316"/>
-  <rect x="596" y="298" width="48" height="8" rx="4" fill="#f97316"/>
-  <ellipse cx="610" cy="268" rx="8" ry="6" fill="#fbbf24" opacity="0.4"/>
+  <path d="M590 540 Q590 508 620 508 Q650 508 650 540" fill="none" stroke="#fbbf24" stroke-width="10" stroke-linecap="round"/>
+  <ellipse cx="620" cy="558" rx="32" ry="28" fill="#f97316"/>
+  <rect x="596" y="578" width="48" height="8" rx="4" fill="#f97316"/>
+  <ellipse cx="610" cy="548" rx="8" ry="6" fill="#fbbf24" opacity="0.4"/>
 </g>
+
+<!-- KETTLEBELL left small -->
 <g opacity="0.22">
-  <path d="M50 160 Q50 138 68 138 Q86 138 86 160" fill="none" stroke="#fbbf24" stroke-width="8" stroke-linecap="round"/>
-  <ellipse cx="68" cy="174" rx="22" ry="20" fill="#f97316"/>
-  <rect x="50" y="188" width="36" height="6" rx="3" fill="#f97316"/>
+  <path d="M50 320 Q50 298 68 298 Q86 298 86 320" fill="none" stroke="#fbbf24" stroke-width="8" stroke-linecap="round"/>
+  <ellipse cx="68" cy="334" rx="22" ry="20" fill="#f97316"/>
+  <rect x="50" y="348" width="36" height="6" rx="3" fill="#f97316"/>
 </g>
+
+<!-- Second barbell lower -->
+<g opacity="0.15">
+  <rect x="150" y="620" width="380" height="10" rx="5" fill="#fbbf24"/>
+  <rect x="140" y="602" width="28" height="46" rx="5" fill="#f97316"/>
+  <rect x="170" y="608" width="18" height="34" rx="4" fill="#fb923c"/>
+  <rect x="492" y="608" width="18" height="34" rx="4" fill="#fb923c"/>
+  <rect x="512" y="602" width="28" height="46" rx="5" fill="#f97316"/>
+</g>
+
+<!-- Dot accents top -->
 <g fill="#fbbf24" opacity="0.35">
-  <circle cx="200" cy="50" r="2"/><circle cx="220" cy="40" r="1.5"/>
-  <circle cx="240" cy="55" r="2"/><circle cx="210" cy="65" r="1.5"/>
+  <circle cx="200" cy="80" r="2"/><circle cx="220" cy="68" r="1.5"/>
+  <circle cx="240" cy="85" r="2"/><circle cx="210" cy="96" r="1.5"/>
 </g>
 <g fill="#dc2626" opacity="0.35">
-  <circle cx="460" cy="350" r="2"/><circle cx="480" cy="340" r="1.5"/>
-  <circle cx="500" cy="355" r="2"/><circle cx="470" cy="365" r="1.5"/>
+  <circle cx="460" cy="780" r="2"/><circle cx="480" cy="768" r="1.5"/>
+  <circle cx="500" cy="783" r="2"/><circle cx="470" cy="793" r="1.5"/>
 </g>
-<linearGradient id="ft" x1="0" y1="1" x2="0" y2="0"><stop offset="65%" stop-color="#1a0a00" stop-opacity="0"/><stop offset="100%" stop-color="#1a0a00" stop-opacity="0.92"/></linearGradient>
-<rect width="680" height="400" fill="url(#ft)"/>
-<linearGradient id="fb" x1="0" y1="0" x2="0" y2="1"><stop offset="55%" stop-color="#1a0a00" stop-opacity="0"/><stop offset="100%" stop-color="#1a0a00" stop-opacity="1"/></linearGradient>
-<rect width="680" height="400" fill="url(#fb)"/>
+
+<!-- Top fade -->
+<linearGradient id="ft" x1="0" y1="1" x2="0" y2="0">
+  <stop offset="80%" stop-color="#1a0a00" stop-opacity="0"/>
+  <stop offset="100%" stop-color="#1a0a00" stop-opacity="0.85"/>
+</linearGradient>
+<rect width="680" height="900" fill="url(#ft)"/>
+
+<!-- Bottom fade -->
+<linearGradient id="fb" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="75%" stop-color="#1a0a00" stop-opacity="0"/>
+  <stop offset="100%" stop-color="#1a0a00" stop-opacity="1"/>
+</linearGradient>
+<rect width="680" height="900" fill="url(#fb)"/>
+
 </svg>
