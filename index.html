@@ -1303,15 +1303,27 @@
             document.body.style.overflow = "";
         }
 
-        // 3. Booking Form to Popup (Prefilled)
+        // 3. Booking Form to Popup (Prefilled) + Make Webhook
         const bookingForm = document.getElementById('bookingForm');
-        bookingForm.addEventListener('submit', (e) => {
+        bookingForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             const name = document.getElementById('name').value.trim();
             const business = document.getElementById('business').value.trim();
             const email = document.getElementById('email').value.trim();
-            const industry = document.getElementById('industry').value.trim()
+            const industry = document.getElementById('industry').value.trim();
+
+            // Send to Make CRM
+            try {
+                await fetch('https://hook.eu2.make.com/8h1bax1j9hhoflsfpjjxu2q5l08lhdp3', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, businessName: business, email, industry }),
+                    mode: 'no-cors'
+                });
+            } catch (err) {
+                console.warn('Webhook error:', err);
+            }
 
             const prefillParams = new URLSearchParams({
                 name: name,
