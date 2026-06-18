@@ -312,7 +312,10 @@ src="https://www.facebook.com/tr?id=878652605281393&ev=PageView&noscript=1"
 
 <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js"></script>
 <script>
-  function openCalendly() {
+function openCalendly() {
+    if (typeof fbq === 'function') {
+      fbq('track', 'Lead');
+    }
     Calendly.initPopupWidget({ url: 'https://calendly.com/letionketienya/project-insight' });
     return false;
   }
