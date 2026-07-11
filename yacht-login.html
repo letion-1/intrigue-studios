@@ -46,8 +46,8 @@
 
   <form id="login-form">
     <label for="email">Your email</label>
-    <input type="email" id="email" required placeholder="you@brokerage.com">
-    <button type="submit" class="submit-btn" id="submit-btn">Send my dashboard link</button>
+    <input type="email" id="email" placeholder="you@brokerage.com">
+    <button type="button" class="submit-btn" id="submit-btn">Send my dashboard link</button>
     <div id="status"></div>
   </form>
 
@@ -58,12 +58,18 @@
 <script>
 const WEBHOOK_URL = "https://hook.eu2.make.com/pl72mmrmd9meaekkyqyhpvsvw57nvvm4";
 
-document.getElementById('login-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
+async function handleLogin(){
   const btn = document.getElementById('submit-btn');
   const statusEl = document.getElementById('status');
   statusEl.className = ''; statusEl.style.display = 'none';
   const email = document.getElementById('email').value.trim();
+
+  if(!email || !email.includes('@')){
+    statusEl.textContent = "Please enter a valid email address.";
+    statusEl.className = 'err';
+    document.getElementById('email').focus();
+    return;
+  }
 
   btn.disabled = true; btn.textContent = "Sending...";
 
@@ -80,16 +86,25 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     } else if(res.ok){
       statusEl.textContent = "Check your inbox — we've sent your dashboard link.";
       statusEl.className = 'ok';
-      document.getElementById('login-form').reset();
+      document.getElementById('email').value = '';
     } else {
-      throw new Error("failed");
+      throw new Error("Request failed with status " + res.status);
     }
   }catch(err){
-    statusEl.textContent = "Something went wrong. Please try again.";
+    statusEl.textContent = "Something went wrong (" + err.message + "). Please try again.";
     statusEl.className = 'err';
   }finally{
     btn.disabled = false; btn.textContent = "Send my dashboard link";
   }
+}
+
+document.getElementById('submit-btn').addEventListener('click', handleLogin);
+document.getElementById('login-form').addEventListener('submit', (e) => { e.preventDefault(); });
+
+window.addEventListener('error', (e) => {
+  const statusEl = document.getElementById('status');
+  statusEl.textContent = "Page error: " + e.message + " — please screenshot this and send it over.";
+  statusEl.className = 'err';
 });
 </script>
 <style>
