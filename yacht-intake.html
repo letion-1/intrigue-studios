@@ -84,7 +84,7 @@
     <button type="button" class="submit-btn" id="submit-btn">Set up my weekly report</button>
     <div id="status"></div>
   </form>
-  <div style="margin-top:16px; font-size:11px; opacity:.4; font-family:monospace;">build: 2026-07-11-fix3</div>
+  <div style="margin-top:16px; font-size:11px; opacity:.4; font-family:monospace;">build: 2026-07-11-fix4</div>
 </div>
 
 <script>
@@ -93,7 +93,6 @@ window.addEventListener('error', (e) => {
   if(statusEl){
     statusEl.textContent = "Page error: " + e.message + " (line " + e.lineno + ") — please screenshot this and send it over.";
     statusEl.className = 'err';
-    statusEl.style.display = 'block';
   }
 });
 </script>
@@ -119,7 +118,7 @@ function slugify(str){
 async function handleSubmit(){
   const btn = document.getElementById('submit-btn');
   const statusEl = document.getElementById('status');
-  statusEl.className = ''; statusEl.style.display = 'none';
+  statusEl.className = ''; statusEl.removeAttribute('style');
 
   const businessName = document.getElementById('business-name').value.trim();
   const email = document.getElementById('contact-email').value.trim();
