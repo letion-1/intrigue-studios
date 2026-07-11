@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your weekly availability report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Work+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#1C2333; --paper:#F3F1EA; --accent:#8C5B3F; --accent-dark:#6B4530; --line:rgba(28,35,51,.15); }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:'Work Sans',sans-serif; line-height:1.5;
+       min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px;}
+  .card{max-width:560px; width:100%; padding:44px 40px; background:white; border-radius:4px;
+        box-shadow:0 30px 60px -30px rgba(28,35,51,.25);}
+  .eyebrow{font-family:'Space Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--accent-dark); display:block; text-align:center;}
+  h1{font-family:'Fraunces',serif; font-weight:700; font-size:26px; margin:10px 0 6px; text-align:center;}
+  .sub{opacity:.7; font-size:14px; margin:0 0 28px; text-align:center;}
+  .date-row{display:flex; gap:12px; margin-bottom:18px;}
+  .date-field{flex:1;}
+  label{display:block; font-family:'Space Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.08em; opacity:.7; margin-bottom:6px;}
+  input[type=date]{
+    width:100%; padding:12px; border:1px solid var(--line); border-radius:2px;
+    background:white; font-size:14px; color:var(--ink); font-family:'Work Sans',sans-serif;
+  }
+  input:focus{outline:2px solid var(--accent); outline-offset:1px;}
+  .btn{
+    display:block; width:100%; text-align:center; background:var(--ink); color:var(--paper); border:none;
+    padding:15px; border-radius:2px; font-size:15px; font-weight:600; cursor:pointer; text-decoration:none;
+  }
+  .btn:hover{background:var(--accent-dark);}
+  .btn:disabled{opacity:.5; cursor:not-allowed;}
+  .result{margin-top:24px; padding:18px; border-radius:2px; background:#F6F4EC; border:1px solid var(--line); text-align:center; display:none;}
+  .result.show{display:block;}
+  .result p{margin:0 0 12px; font-size:14px; opacity:.85;}
+  .spinner{width:22px; height:22px; border:3px solid var(--line); border-top-color:var(--accent);
+           border-radius:50%; margin:0 auto 10px; animation:spin 0.8s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .updated{font-family:'Space Mono',monospace; font-size:11px; opacity:.5; margin-top:20px; text-align:center;}
+  .links-list{margin-top:26px; padding-top:20px; border-top:1px solid var(--line);}
+  .links-list ol{margin:0; padding-left:18px; font-size:13px; opacity:.7;}
+  .links-list li{margin-bottom:6px; word-break:break-all;}
+  @media (prefers-reduced-motion: reduce){ .spinner{animation:none;} }
+</style>
+</head>
+<body>
+<div class="card" id="card">
+  <span class="eyebrow">Fleet availability</span>
+  <h1 id="client-name">Loading...</h1>
+  <p class="sub" id="client-sub">Fetching your account</p>
+
+  <div id="controls" style="display:none;">
+    <div class="date-row">
+      <div class="date-field">
+        <label for="date-from">From</label>
+        <input type="date" id="date-from">
+      </div>
+      <div class="date-field">
+        <label for="date-to">To</label>
+        <input type="date" id="date-to">
+      </div>
+    </div>
+    <button class="btn" id="check-btn">Check availability</button>
+
+    <div class="result" id="result"></div>
+  </div>
+</div>
+
+<script>
+const WEBHOOK_URL = "https://hook.eu2.make.com/2f1f2r9nxig9u9isjvmlkm7njuobops5";
+const params = new URLSearchParams(location.search);
+const clientId = params.get('client');
+
+const controls = document.getElementById('controls');
+const nameEl = document.getElementById('client-name');
+const subEl = document.getElementById('client-sub');
+const resultEl = document.getElementById('result');
+
+function defaultDates(){
+  const today = new Date();
+  const in7 = new Date(today.getTime() + 7*24*60*60*1000);
+  document.getElementById('date-from').value = today.toISOString().slice(0,10);
+  document.getElementById('date-to').value = in7.toISOString().slice(0,10);
+}
+
+function init(){
+  if(!clientId){
+    nameEl.textContent = "Missing link";
+    subEl.textContent = "This page needs a personal link — log in again to get one.";
+    return;
+  }
+  nameEl.textContent = "Your fleet";
+  subEl.textContent = "Pick a date range and check availability across all your linked sources.";
+  controls.style.display = 'block';
+  defaultDates();
+}
+
+document.getElementById('check-btn').addEventListener('click', async () => {
+  const btn = document.getElementById('check-btn');
+  const dateFrom = document.getElementById('date-from').value;
+  const dateTo = document.getElementById('date-to').value;
+
+  resultEl.className = 'result show';
+  resultEl.innerHTML = `<div class="spinner"></div><p>Checking your linked sources...</p>`;
+  btn.disabled = true;
+
+  try{
+    const res = await fetch(WEBHOOK_URL, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({client_id: clientId, date_from: dateFrom, date_to: dateTo})
+    });
+    const raw = (await res.text()).trim().replace(/^"|"$/g, '');
+
+    if(!res.ok || !raw){
+      resultEl.innerHTML = `<p><strong>No report ready yet for this range.</strong><br>
+        Reports generate on request — this may be your first check, or this date range hasn't been processed yet.</p>`;
+    } else {
+      resultEl.innerHTML = `<p><strong>Your report is ready.</strong></p>
+        <a class="btn" href="${raw}" target="_blank" rel="noopener">Download PDF</a>
+        <div class="updated">${dateFrom} to ${dateTo}</div>`;
+    }
+  }catch(err){
+    resultEl.innerHTML = `<p><strong>Couldn't reach the report service.</strong><br>Please try again in a moment.</p>`;
+  }finally{
+    btn.disabled = false;
+  }
+});
+
+init();
+</script>
+</body>
+</html>
