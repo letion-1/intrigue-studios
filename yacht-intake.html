@@ -44,6 +44,12 @@
   .submit-btn:disabled{opacity:.5; cursor:not-allowed;}
   #status{margin-top:20px; font-size:14px; padding:14px 16px; border-radius:2px; display:none;}
   #status.ok{display:block; background:#E7F1EC; color:var(--ok); border:1px solid var(--ok);}
+  #status.ok .btn-inline{
+    display:inline-block; background:var(--ink); color:var(--paper); padding:10px 20px;
+    border-radius:2px; text-decoration:none; font-weight:600; font-size:14px;
+  }
+  #status.ok .btn-inline:hover{background:var(--accent-dark);}
+  #status.ok a:not(.btn-inline){color:var(--accent-dark); font-weight:600;}
   #status.err{display:block; background:#F6E8E8; color:var(--err); border:1px solid var(--err);}
   .hint{font-size:13px; opacity:.6; margin-top:-14px; margin-bottom:20px;}
 </style>
@@ -163,9 +169,9 @@ async function handleSubmit(){
 
     if(!res.ok) throw new Error("Request failed with status " + res.status);
 
-    statusEl.innerHTML = `You're set up! Your personal report page:<br>
-      <strong>${location.origin}${location.pathname.replace('yacht-intake','yacht-dashboard')}?client=${clientId}</strong><br>
-      Bookmark it — no login needed. Your first report generates this coming Monday.`;
+    statusEl.innerHTML = `<strong>You're set up!</strong> Your weekly report page is ready right now — no login needed to open it.<br><br>
+      <a class="btn-inline" href="${location.origin}${location.pathname.replace('yacht-intake','yacht-dashboard')}?client=${clientId}">Open your dashboard →</a><br><br>
+      Bookmark that link. If you ever lose it, use <a href="yacht-login.html">the login page</a> with this email to get it resent.`;
     statusEl.className = 'ok';
     document.getElementById('business-name').value = '';
     document.getElementById('contact-email').value = '';
