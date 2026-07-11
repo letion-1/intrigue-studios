@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log in to your availability dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Work+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#1C2333; --paper:#F3F1EA; --accent:#8C5B3F; --accent-dark:#6B4530; --line:rgba(28,35,51,.15); --err:#B03A3A; --ok:#2E6B4F; }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:'Work Sans',sans-serif; line-height:1.5;
+       min-height:100vh; display:flex; align-items:center; justify-content:center;}
+  .card{max-width:440px; width:100%; margin:24px; padding:44px 36px; background:white; border-radius:4px;
+        box-shadow:0 30px 60px -30px rgba(28,35,51,.25);}
+  .eyebrow{font-family:'Space Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--accent-dark);}
+  h1{font-family:'Fraunces',serif; font-weight:700; font-size:26px; margin:10px 0 8px;}
+  p{opacity:.75; font-size:14px; margin:0 0 26px;}
+  label{display:block; font-family:'Space Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.08em; opacity:.7; margin-bottom:6px;}
+  input[type=email]{
+    width:100%; padding:14px; border:1px solid var(--line); border-radius:2px;
+    background:white; font-size:15px; color:var(--ink); margin-bottom:18px;
+  }
+  input:focus{outline:2px solid var(--accent); outline-offset:1px;}
+  .submit-btn{
+    width:100%; background:var(--ink); color:var(--paper); border:none; padding:15px;
+    border-radius:2px; font-size:15px; font-weight:600; cursor:pointer;
+  }
+  .submit-btn:hover{background:var(--accent-dark);}
+  .submit-btn:disabled{opacity:.5; cursor:not-allowed;}
+  #status{margin-top:18px; font-size:14px; padding:12px 14px; border-radius:2px; display:none;}
+  #status.ok{display:block; background:#E7F1EC; color:var(--ok); border:1px solid var(--ok);}
+  #status.err{display:block; background:#F6E8E8; color:var(--err); border:1px solid var(--err);}
+  .footer-link{margin-top:22px; font-size:13px; text-align:center; opacity:.7;}
+  .footer-link a{color:var(--accent-dark); text-decoration:none; font-weight:600;}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="eyebrow">Client login</div>
+  <h1>Check this week's availability</h1>
+  <p>Enter the email you signed up with — we'll send you a direct link to your dashboard. No password to remember.</p>
+
+  <form id="login-form">
+    <label for="email">Your email</label>
+    <input type="email" id="email" required placeholder="you@brokerage.com">
+    <button type="submit" class="submit-btn" id="submit-btn">Send my dashboard link</button>
+    <div id="status"></div>
+  </form>
+
+  <div class="footer-link">First time here? <a href="yacht-intake.html">Set up your account</a></div>
+</div>
+
+<script>
+const WEBHOOK_URL = "https://hook.eu2.make.com/pl72mmrmd9meaekkyqyhpvsvw57nvvm4";
+
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('submit-btn');
+  const statusEl = document.getElementById('status');
+  statusEl.className = ''; statusEl.style.display = 'none';
+  const email = document.getElementById('email').value.trim();
+
+  btn.disabled = true; btn.textContent = "Sending...";
+
+  try{
+    const res = await fetch(WEBHOOK_URL, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({email})
+    });
+
+    if(res.status === 404){
+      statusEl.textContent = "We couldn't find an account with that email. Check it, or set up a new account below.";
+      statusEl.className = 'err';
+    } else if(res.ok){
+      statusEl.textContent = "Check your inbox — we've sent your dashboard link.";
+      statusEl.className = 'ok';
+      document.getElementById('login-form').reset();
+    } else {
+      throw new Error("failed");
+    }
+  }catch(err){
+    statusEl.textContent = "Something went wrong. Please try again.";
+    statusEl.className = 'err';
+  }finally{
+    btn.disabled = false; btn.textContent = "Send my dashboard link";
+  }
+});
+</script>
+</body>
+</html>
