@@ -52,6 +52,7 @@
   </form>
 
   <div class="footer-link">First time here? <a href="yacht-intake.html">Set up your account</a></div>
+  <div style="margin-top:16px; font-size:11px; opacity:.4; font-family:monospace; text-align:center;">build: 2026-07-11-fix4</div>
 </div>
 </div>
 
@@ -61,7 +62,7 @@ const WEBHOOK_URL = "https://hook.eu2.make.com/pl72mmrmd9meaekkyqyhpvsvw57nvvm4"
 async function handleLogin(){
   const btn = document.getElementById('submit-btn');
   const statusEl = document.getElementById('status');
-  statusEl.className = ''; statusEl.style.display = 'none';
+  statusEl.className = ''; statusEl.removeAttribute('style');
   const email = document.getElementById('email').value.trim();
 
   if(!email || !email.includes('@')){
