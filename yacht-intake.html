@@ -90,7 +90,7 @@
     <button type="button" class="submit-btn" id="submit-btn">Set up my weekly report</button>
     <div id="status"></div>
   </form>
-  <div style="margin-top:16px; font-size:11px; opacity:.4; font-family:monospace;">build: 2026-07-11-fix4</div>
+  <div style="margin-top:16px; font-size:11px; opacity:.4; font-family:monospace;">build: 2026-07-11-fix5</div>
 </div>
 
 <script>
@@ -169,9 +169,14 @@ async function handleSubmit(){
 
     if(!res.ok) throw new Error("Request failed with status " + res.status);
 
-    statusEl.innerHTML = `<strong>You're set up!</strong> Your weekly report page is ready right now — no login needed to open it.<br><br>
-      <a class="btn-inline" href="${location.origin}${location.pathname.replace('yacht-intake','yacht-dashboard')}?client=${clientId}">Open your dashboard →</a><br><br>
-      Bookmark that link. If you ever lose it, use <a href="yacht-login.html">the login page</a> with this email to get it resent.`;
+    const dashboardUrl = `${location.origin}${location.pathname.replace('yacht-intake','yacht-dashboard')}?client=${clientId}`;
+
+    statusEl.innerHTML = `<strong>You're set up!</strong> Your weekly report page is ready right now.<br>Taking you there...`;
+    statusEl.className = 'ok';
+
+    setTimeout(() => {
+      window.location.href = dashboardUrl;
+    }, 1800);
     statusEl.className = 'ok';
     document.getElementById('business-name').value = '';
     document.getElementById('contact-email').value = '';
