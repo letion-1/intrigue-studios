@@ -113,6 +113,7 @@
     <div class="result hidden" id="resultBox">
       <p class="result-title" id="resultTitle"></p>
       <p class="result-sub" id="resultSub"></p>
+      <a class="add-link-btn" id="dashboardLink" style="display:none; text-align:center; text-decoration:none; margin-bottom:0;">Go to your dashboard &rarr;</a>
     </div>
   </div>
 
@@ -153,11 +154,20 @@
 
   addLinkBtn.addEventListener("click", addLinkRow);
 
-  function showResult(state, title, sub) {
+  const dashboardLink = document.getElementById("dashboardLink");
+
+  function showResult(state, title, sub, clientId) {
     resultBox.classList.remove("hidden", "success", "error");
     resultBox.classList.add(state);
     resultTitle.textContent = title;
     resultSub.textContent = sub;
+
+    if (clientId) {
+      dashboardLink.href = "yacht-dashboard.html?client=" + encodeURIComponent(clientId);
+      dashboardLink.style.display = "block";
+    } else {
+      dashboardLink.style.display = "none";
+    }
   }
 
   submitBtn.addEventListener("click", async () => {
@@ -200,7 +210,8 @@
       showResult(
         "success",
         "You're all set.",
-        `We're processing ${data.total_sources} source${data.total_sources === 1 ? '' : 's'} now. This usually takes a few minutes — check your dashboard shortly.`
+        `We're processing ${data.total_sources} source${data.total_sources === 1 ? '' : 's'} now. This usually takes a few minutes — check your dashboard shortly.`,
+        data.client_id
       );
     } catch (err) {
       showResult("error", "Something went wrong submitting your links", "Please try again or email us directly.");
