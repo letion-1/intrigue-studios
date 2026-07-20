@@ -210,9 +210,15 @@
       showResult(
         "success",
         "You're all set.",
-        `We're processing ${data.total_sources} source${data.total_sources === 1 ? '' : 's'} now. This usually takes a few minutes — check your dashboard shortly.`,
+        `We're processing ${data.total_sources} source${data.total_sources === 1 ? '' : 's'} now. Redirecting to your dashboard...`,
         data.client_id
       );
+
+      if (data.client_id) {
+        setTimeout(() => {
+          window.location.href = "yacht-dashboard.html?client=" + encodeURIComponent(data.client_id);
+        }, 1500);
+      }
     } catch (err) {
       showResult("error", "Something went wrong submitting your links", "Please try again or email us directly.");
     } finally {
