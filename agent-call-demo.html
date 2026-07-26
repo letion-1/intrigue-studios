@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Agent Console — Intrigue Studios Voice Lab</title>
+<title>Agent Console — Intrigue Studios</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -79,7 +79,7 @@
 </head>
 <body>
 <header>
-  <div class="brand">INTRIGUE <span>◆</span> VOICE LAB</div>
+  <div class="brand">INTRIGUE <span>◆</span> STUDIOS</div>
   <div class="env">AGENT DESKTOP · SANDBOX · EXT 1002</div>
   <div class="statebadge" id="stateBadge">Waiting for transfer</div>
 </header>
@@ -116,8 +116,8 @@
     <div class="step" data-step="5"><div class="dot"></div><div><div class="t">Agent connected</div><div class="s">200 OK · media bridged</div></div></div>
 
     <div class="actions">
-      <button class="primary" id="btnConnected">Mark connected</button>
-      <button id="btnFallback">Mark agent unavailable</button>
+      <button class="primary" id="btnConnected">Agent connected</button>
+      <button id="btnFallback">Agent unavailable</button>
       <button class="subtle" id="btnClear">Clear console</button>
     </div>
     <div class="feednote" id="feedNote">feed: not configured</div>
@@ -133,7 +133,7 @@ const POLL_MS = 2000;
 
 const badge = document.getElementById("stateBadge");
 const note  = document.getElementById("feedNote");
-let lastId = null, state = "waiting";
+let lastId = null, state = "waiting", lastStatus = null;
 
 function setSteps(n, liveStep){ // steps 0..n done, liveStep pulsing
   document.querySelectorAll(".step").forEach(el=>{
@@ -177,7 +177,14 @@ async function poll(){
     note.textContent = "feed: live · " + new Date().toLocaleTimeString(); note.className="feednote";
     const id = r.vapi_call_id || r.callId || JSON.stringify(r).slice(0,60);
     if(r && (r.summary||r.intent) && id !== lastId){
-      lastId = id; render(r); setState("incoming");
+      // brand-new call: show briefing, start in incoming
+      lastId = id; lastStatus = "incoming"; render(r); setState("incoming");
+    } else if (r && id === lastId && r.status && r.status !== lastStatus){
+      // same call, live status change pushed by the PBX (via Make)
+      lastStatus = r.status;
+      if(r.status === "connected") setState("connected");
+      else if(r.status === "fallback") setState("fallback");
+      else if(r.status === "incoming") setState("incoming");
     }
   }catch(e){ note.textContent = "feed: unreachable — check webhook / CORS"; note.className="feednote err"; }
 }
