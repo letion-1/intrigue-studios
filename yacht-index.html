@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Bahari OS | The operating system for charter brokerage</title>
 <meta name="description" content="Availability, inquiries, fleet, clients, proposals and charters in one system your whole desk works from. Built for brokerages managing yachts across many owners, sources and formats." />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=Markazi+Text:wght@400..700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="preload" href="fonts/atkinson-hyperlegible-next-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/markazi-text-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="fonts.css">
 <style>
 :root{
   --gold:#C8A24A;
@@ -44,11 +44,11 @@
 }
 
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;overflow-x:clip}
 body{
   margin:0;background:var(--bg);color:var(--tx);
   font-family:var(--body);font-size:21px;font-weight:450;line-height:1.5;
-  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;overflow-x:clip;max-width:100%;
   transition:background .5s var(--ease),color .5s var(--ease);
 }
 h1,h2,h3,h4{font-family:var(--display);font-weight:700;letter-spacing:-.03em;line-height:1.12;margin:0;
@@ -111,7 +111,7 @@ a{color:inherit}
 @keyframes pip{0%,100%{opacity:1}50%{opacity:.25}}
 
 /* ===== INTERACTIVE WATER ===== */
-.water{position:relative;margin-top:0;height:clamp(320px,40vw,520px);
+.water{position:relative;margin-top:0;height:clamp(240px,40vw,520px);overflow:hidden;
   width:100vw;margin-left:calc(50% - 50vw);cursor:crosshair;touch-action:pan-y}
 #surface{position:absolute;inset:0;width:100%;height:100%;display:block}
 .water-hint{position:absolute;left:50%;transform:translateX(-50%);bottom:16px;z-index:3;
@@ -148,10 +148,8 @@ a{color:inherit}
 .divider.flip{transform:rotate(180deg)}
 
 /* ===== TRIO ===== */
-.trio{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1px;
-  background:var(--line-soft);border:1px solid var(--line-soft);margin-top:46px}
-.trio>div{background:var(--bg);padding:30px 28px}
-.alt .trio>div{background:var(--bg-2)}
+.trio{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));margin-top:46px}
+.trio>div{padding:30px 28px;border:1px solid var(--line-soft);margin:0 -1px -1px 0}
 .trio h3{font-size:22px;margin-bottom:12px}
 .trio p{font-size:19px;color:var(--tx-2)}
 
@@ -161,7 +159,7 @@ a{color:inherit}
 .split p + p{margin-top:18px}
 
 /* ===== SOURCE RAIL ===== */
-.rail{margin-top:44px;width:100vw;margin-left:calc(50% - 50vw);position:relative;
+.rail{margin-top:44px;width:100vw;margin-left:calc(50% - 50vw);position:relative;overflow:hidden;
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
   mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
 .rail-track{display:flex;gap:12px;width:max-content;animation:drift2 46s linear infinite}
@@ -215,7 +213,8 @@ a{color:inherit}
 .loop-btn[aria-selected="true"] i{animation:fill 7s linear forwards}
 @keyframes fill{to{transform:scaleX(1)}}
 .loop-body{display:grid;grid-template-columns:1.05fr 1fr;min-height:330px}
-.loop-copy{padding:clamp(22px,3vw,36px);border-right:1px solid var(--line-soft)}
+@media(max-width:600px){.loop-body{min-height:0}.loop-copy h3{font-size:23px}}
+.loop-copy{padding:clamp(20px,3vw,36px);border-right:1px solid var(--line-soft)}
 .loop-copy h3{font-size:26px;margin-bottom:14px}
 .loop-copy p{font-size:20px;color:var(--tx-2)}
 .loop-stage{padding:clamp(20px,2.6vw,30px);background:var(--surface-2)}
@@ -270,10 +269,9 @@ a{color:inherit}
 .notlist svg{flex:none;margin-top:7px}
 
 /* ===== SECURITY ===== */
-.seclist{margin-top:44px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:1px;background:var(--line-soft);border:1px solid var(--line-soft)}
-.seclist>div{background:var(--bg);padding:22px 24px;display:flex;gap:13px;align-items:flex-start}
-.alt .seclist>div{background:var(--bg-2)}
+.seclist{margin-top:44px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.seclist>div{padding:22px 24px;display:flex;gap:13px;align-items:flex-start;
+  border:1px solid var(--line-soft);margin:0 -1px -1px 0}
 .seclist svg{flex:none;margin-top:6px}
 .seclist p{font-size:19px;color:var(--tx-2)}
 
@@ -326,15 +324,34 @@ a{color:inherit}
   .nav-links{display:none}
   .notgrid{grid-template-columns:1fr}
   .notcol.a{border-right:0;border-bottom:1px solid var(--line-soft)}
-  .loop-nav{grid-template-columns:repeat(2,1fr)}
-  .loop-btn{border-bottom:1px solid var(--line-soft)}
+  .loop-nav{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .loop-nav::-webkit-scrollbar{display:none}
+  .loop-btn{flex:0 0 auto;min-width:158px;scroll-snap-align:start;padding:15px 16px}
+}
+@media(max-width:620px){
+  .nav-in{gap:14px;height:62px}
+  .nav .btn-fill{display:none}
+  .mark img{height:26px}
+  .mark-tx{font-size:11px;letter-spacing:.18em}
+  .themetog{width:34px;height:34px}
+}
+@media(max-width:440px){
+  .btn{white-space:normal;text-align:center;justify-content:center;font-size:15px}
+  .hero-cta .btn,.cta-row .btn{width:100%}
+  .hero-cta,.cta-row{gap:10px}
+  .btn-lg{padding:14px 18px}
+  .agrid-key{margin-left:0;gap:12px}
+  .weeks{gap:3px}
 }
 @media(max-width:600px){
   body{font-size:20px}
+  .hero{padding-top:36px}
+  .hero h1{max-width:none}
+  .water-read{gap:10px 18px;font-size:9px;padding:11px 14px}
   .foot-grid{grid-template-columns:1fr}
   .agrid{grid-template-columns:1fr;gap:6px}
   .agrid-months{grid-column:1}
-  .loop-nav{grid-template-columns:1fr}
   .row{grid-template-columns:1fr;gap:2px}
 }
 @media(prefers-reduced-motion:reduce){
@@ -369,7 +386,7 @@ a{color:inherit}
         <path d="M20.5 14.2A8.7 8.7 0 0 1 9.8 3.5a8.7 8.7 0 1 0 10.7 10.7z"/>
       </svg>
     </button>
-    <a class="btn btn-fill" href="#demo">See it on your data</a>
+    <a class="btn btn-fill" href="#demo" data-cal>Book demo</a>
   </div>
 </nav>
 
@@ -383,8 +400,8 @@ a{color:inherit}
       works from. Built for brokerages that manage yachts across many owners, sources and formats.
     </p>
     <div class="hero-cta fade-up d4">
-      <a class="btn btn-fill btn-lg" href="#demo">See it run on your own data</a>
-      <a class="btn btn-ghost btn-lg" href="#availability">How the availability engine works</a>
+      <a class="btn btn-fill btn-lg" href="#demo" data-cal>Book demo</a>
+      <a class="btn btn-ghost btn-lg" href="#database">How the availability engine works</a>
     </div>
     <p class="hero-note fade-up d5"><span class="pip"></span>Bring one supplier spreadsheet and one real inquiry. We run both live.</p>
   </div>
@@ -436,7 +453,7 @@ a{color:inherit}
 </section>
 
 <!-- ===== ONE DATABASE ===== -->
-<section class="sec alt" style="padding-top:0">
+<section class="sec alt" id="database" style="padding-top:0">
   <div class="wrap">
     <div class="split rv">
       <div>
@@ -611,7 +628,7 @@ a{color:inherit}
       </details>
       <details>
         <summary>What if an operator sends a format you have never seen?</summary>
-        <div class="ans">Six common layouts are handled directly. Anything unfamiliar goes through AI structure inference, and the result is validated before it enters your fleet rather than after. If a file genuinely cannot be read, it is flagged for a person instead of being silently half imported. In practice the second file from the same operator is already recognised, because the system remembers the shape of that source.</div>
+        <div class="ans">Six common layouts are handled directly. Anything unfamiliar goes through AI structure inference, and the result is validated before it enters your fleet rather than after. If a file genuinely cannot be read, it is flagged for a person instead of being silently half imported. In practice the second file from the same operator is already recognised, because the system remembers the shape of that source. If a source needs an API connection or password authentication to reach, we set that up for you during implementation rather than leaving it to your team.</div>
       </details>
       <details>
         <summary>How long does setup take?</summary>
@@ -656,7 +673,7 @@ a{color:inherit}
     <p>Send one supplier spreadsheet and one real inquiry email. We run both through the system and show you the output on a call. If your availability lives in spreadsheets, we would like to hear from you.</p>
     <div class="cta-row">
       <a class="btn btn-fill btn-lg" href="mailto:team@intriguestudios.de?subject=Bahari%20OS">Send us a spreadsheet</a>
-      <a class="btn btn-ghost btn-lg" href="mailto:team@intriguestudios.de?subject=Bahari%20OS%20call">Book a 20 minute call</a>
+      <a class="btn btn-ghost btn-lg" href="#" data-cal>Book a 20 minute call</a>
     </div>
     <p class="cta-fine">No account required to see the output</p>
   </div>
@@ -684,9 +701,9 @@ a{color:inherit}
         <li><a href="https://intriguestudios.de">Intrigue Studios</a></li>
         <li><a href="mailto:team@intriguestudios.de">Contact</a></li></ul></div>
       <div><h4>Legal</h4><ul>
-        <li><a href="/impressum">Impressum</a></li>
-        <li><a href="/datenschutz">Datenschutz</a></li>
-        <li><a href="/agb">Terms</a></li></ul></div>
+        <li><a href="impressum.html">Impressum</a></li>
+        <li><a href="datenschutz.html">Datenschutz</a></li>
+        <li><a href="agb.html">Terms</a></li></ul></div>
     </div>
     <div class="foot-bot">
       <span>&copy; 2026 Intrigue Studios, Krefeld, Germany</span>
@@ -698,6 +715,16 @@ a{color:inherit}
 <script>
 (function(){
 "use strict";
+
+/* =========================================================================
+   BOOKING LINK. Replace this one value with your Calendly URL and every
+   demo button on the page picks it up.
+   ========================================================================= */
+var CALENDLY="https://calendly.com/letionketienya/project-insight";
+document.querySelectorAll("[data-cal]").forEach(function(a){
+  a.href=CALENDLY; a.target="_blank"; a.rel="noopener";
+});
+
 var reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 var root=document.documentElement;
 
@@ -730,6 +757,7 @@ function water(canvas,host,opts){
     ripples.push({x:x,y:y,t:0,p:power||1});
   }
   /* surface height at x for a given swell layer */
+  var wf=1;
   function surf(x,baseY,amp,ph,sp){
     var y=baseY
       + Math.sin(x*0.0034 + t*sp*0.75 + ph)*amp
@@ -737,9 +765,9 @@ function water(canvas,host,opts){
       + Math.sin(x*0.019  + t*sp*1.9  + ph*2.6)*amp*0.15;
     for(var k=0;k<ripples.length;k++){
       var rp=ripples[k], dx=x-rp.x, dy=baseY-rp.y;
-      var d=Math.sqrt(dx*dx+dy*dy), band=d-rp.t*250;
+      var d=Math.sqrt(dx*dx+dy*dy), band=d-rp.t*250*Math.max(0.55,wf);
       if(band>-110&&band<110){
-        y+=Math.sin(band*0.075)*34*Math.exp(-(band*band)/1900)*Math.exp(-rp.t*1.8)*rp.p;
+        y+=Math.sin(band*0.075)*34*wf*Math.exp(-(band*band)/1900)*Math.exp(-rp.t*1.8)*rp.p;
       }
     }
     return y;
@@ -747,11 +775,12 @@ function water(canvas,host,opts){
   function draw(){
     ctx.clearRect(0,0,w,h);
     var body=v("--w-body"),deep=v("--w-deep"),crest=v("--w-crest"),foam=v("--w-foam");
-    var L=cfg.layers;
+    wf=Math.max(0.42,Math.min(1,w/1000));
+    var L=w<700?Math.max(5,Math.round(cfg.layers*0.6)):cfg.layers;
     for(var i=0;i<L;i++){
       var dep=i/(L-1);                          // 0 = far horizon, 1 = nearest
       var baseY=h*(0.09+0.62*dep+0.30*dep*dep);
-      var amp=(5+26*dep)*(cfg.crest);
+      var amp=(5+26*dep)*cfg.crest*wf;
       var ph=i*1.34, sp=0.55+dep*0.85;
       var step=dep>0.55?4:7;
 
@@ -769,7 +798,7 @@ function water(canvas,host,opts){
       ctx.beginPath();
       ctx.moveTo(0,surf(0,baseY,amp,ph,sp));
       for(var x2=step;x2<=w;x2+=step) ctx.lineTo(x2,surf(x2,baseY,amp,ph,sp));
-      ctx.lineWidth=1.4+3.4*dep;
+      ctx.lineWidth=(1.4+3.4*dep)*(0.7+0.3*wf);
       ctx.lineCap="round"; ctx.lineJoin="round";
       ctx.strokeStyle=rgba(crest,(0.20+0.55*dep)*cfg.alpha);
       ctx.stroke();
@@ -831,6 +860,7 @@ function water(canvas,host,opts){
 }
 
 var hint=document.getElementById("hint");
+if(window.matchMedia("(hover: none)").matches && hint) hint.textContent="Touch the water";
 var touched=false;
 var sea=water(document.getElementById("surface"),document.getElementById("water"),{
   layers:11,speed:.015,alpha:1,crest:1,
