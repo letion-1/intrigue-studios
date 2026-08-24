@@ -648,7 +648,7 @@ a{color:inherit}
   <div class="wrap">
     <div class="sec-head rv">
       <span class="eyebrow">Security and data</span>
-      <h2>Your data, and your clients' data</h2>
+      <h2>Your data, and the data of your clients</h2>
       <p>A management company's legal review will ask about all of this, so the answers live on the page rather than in a follow up email.</p>
     </div>
     <div class="seclist rv">
@@ -1156,9 +1156,21 @@ STAGES.forEach(function(s,i){
   lnav.appendChild(b);
 });
 
+function centerTab(i){
+  var btn=lnav.children[i];
+  if(!btn) return;
+  /* only when the strip is horizontally scrollable, ie the phone layout */
+  if(lnav.scrollWidth <= lnav.clientWidth + 2) return;
+  var target = btn.offsetLeft - (lnav.clientWidth - btn.offsetWidth)/2;
+  target = Math.max(0, Math.min(target, lnav.scrollWidth - lnav.clientWidth));
+  if(lnav.scrollTo) lnav.scrollTo({left:target, behavior: reduce ? "auto" : "smooth"});
+  else lnav.scrollLeft = target;
+}
+
 function show(i){
   cur=i;
   clearTimeout(loopTimer);
+  centerTab(i);
   Array.prototype.forEach.call(lnav.children,function(b,j){
     b.setAttribute("aria-selected",j===i?"true":"false");
     var bar=b.querySelector("i");
