@@ -267,6 +267,34 @@ a{color:inherit}
 .check.in{opacity:1;transform:none;transition:.5s var(--ease)}
 .check svg{flex:none;margin-top:6px}
 
+
+/* ===== stage accordion, phones only ===== */
+.loop-acc{display:none}
+@media(max-width:860px){
+  .loop-nav{display:none}
+  .loop-body{display:none}
+  .loop-acc{display:block}
+  .acc-item{border-bottom:1px solid var(--line-soft)}
+  .acc-item:last-child{border-bottom:0}
+  .acc-btn{width:100%;display:flex;align-items:center;gap:14px;text-align:left;
+    background:transparent;border:0;padding:18px 18px;cursor:pointer;color:var(--tx);
+    font-family:var(--display);transition:background .25s var(--ease)}
+  .acc-btn:hover{background:var(--gold-wash)}
+  .acc-n{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--tx-3);flex:none}
+  .acc-t{font-size:17px;font-weight:700;letter-spacing:-.02em;flex:1}
+  .acc-chev{flex:none;width:11px;height:11px;border-right:2px solid var(--gold);
+    border-bottom:2px solid var(--gold);transform:rotate(45deg);
+    transition:transform .3s var(--ease);margin-right:4px}
+  .acc-item.open .acc-btn{background:var(--gold-wash)}
+  .acc-item.open .acc-n{color:var(--gold)}
+  .acc-item.open .acc-chev{transform:rotate(-135deg)}
+  .acc-panel{overflow:hidden;max-height:0;transition:max-height .42s var(--ease)}
+  .acc-inner{padding:0 18px 22px}
+  .acc-inner .lead{font-size:19px;color:var(--tx-2);margin-bottom:20px}
+  .acc-stage{border:1px solid var(--line-soft);background:var(--surface-2);padding:18px}
+}
+@media(prefers-reduced-motion:reduce){.acc-panel{transition:none}}
+
 /* ===== VS / NOT ===== */
 .notgrid{display:grid;grid-template-columns:1fr 1fr;margin-top:44px;border:1px solid var(--line)}
 .notcol{padding:clamp(22px,3vw,34px)}
@@ -369,17 +397,7 @@ a{color:inherit}
   .nav-links{display:none}
   .notgrid{grid-template-columns:1fr}
   .notcol.a{border-right:0;border-bottom:1px solid var(--line-soft)}
-  /* horizontal strip. no scroll snapping, because mandatory snap fights the
-     programmatic scroll that keeps the active tab in view and reads as jank */
-  .loop-nav{display:flex;overflow-x:auto;scroll-snap-type:none;
-    -webkit-overflow-scrolling:touch;scrollbar-width:none;
-    overscroll-behavior-x:contain;
-    -webkit-mask-image:linear-gradient(90deg,transparent,#000 22px,#000 calc(100% - 22px),transparent);
-    mask-image:linear-gradient(90deg,transparent,#000 22px,#000 calc(100% - 22px),transparent)}
-  .loop-nav::-webkit-scrollbar{display:none}
-  .loop-btn{flex:0 0 auto;min-width:150px;padding:14px 16px}
-  /* height is locked from JS to the tallest stage, so advancing never
-     shoves the rest of the page up or down */
+  /* the stage strip is desktop only, phones use the accordion below */
 }
 @media(max-width:620px){
   .nav-in{gap:14px;height:62px}
@@ -582,6 +600,7 @@ a{color:inherit}
           <div id="stageBody"></div>
         </div>
       </div>
+      <div class="loop-acc" id="loopAcc"></div>
     </div>
   </div>
 </section>
@@ -1210,8 +1229,70 @@ function show(i){
   lt.textContent=s.title;ltx.textContent=s.text;
   sl.textContent=s.label;sb.textContent=s.badge;
   sbody.innerHTML="";s.render(sbody);
-  if(loopAuto&&!reduce) loopTimer=setTimeout(function(){show((cur+1)%STAGES.length);},7000);
+  if(loopAuto&&!reduce&&!isPhone.matches) loopTimer=setTimeout(function(){show((cur+1)%STAGES.length);},7000);
 }
+
+/* ---------- phones get an accordion, not a sideways strip ---------- */
+var isPhone = window.matchMedia("(max-width:860px)");
+
+(function buildAccordion(){
+  var acc=document.getElementById("loopAcc");
+  if(!acc) return;
+  STAGES.forEach(function(st,i){
+    var item=document.createElement("div");
+    item.className="acc-item"+(i===0?" open":"");
+
+    var btn=document.createElement("button");
+    btn.type="button"; btn.className="acc-btn";
+    btn.setAttribute("aria-expanded", i===0?"true":"false");
+    btn.innerHTML='<span class="acc-n">'+st.n+'</span>'+
+                  '<span class="acc-t">'+st.title+'</span>'+
+                  '<span class="acc-chev"></span>';
+
+    var panel=document.createElement("div");
+    panel.className="acc-panel";
+    var inner=document.createElement("div");
+    inner.className="acc-inner";
+    var lead=document.createElement("p");
+    lead.className="lead"; lead.textContent=st.text;
+    var stage=document.createElement("div");
+    stage.className="acc-stage";
+    var head=document.createElement("div");
+    head.className="stage-head";
+    head.innerHTML='<span class="stage-label">'+st.label+'</span>'+
+                   '<span class="stage-badge">'+st.badge+'</span>';
+    var bodyEl=document.createElement("div");
+    st.render(bodyEl);
+    bodyEl.querySelectorAll(".row,.boat,.check").forEach(function(n){n.classList.add("in");});
+    stage.appendChild(head); stage.appendChild(bodyEl);
+    inner.appendChild(lead); inner.appendChild(stage);
+    panel.appendChild(inner);
+    item.appendChild(btn); item.appendChild(panel);
+    acc.appendChild(item);
+
+    btn.addEventListener("click",function(){
+      var isOpen=item.classList.contains("open");
+      acc.querySelectorAll(".acc-item").forEach(function(o){
+        o.classList.remove("open");
+        o.querySelector(".acc-btn").setAttribute("aria-expanded","false");
+        o.querySelector(".acc-panel").style.maxHeight="0px";
+      });
+      if(!isOpen){
+        item.classList.add("open");
+        btn.setAttribute("aria-expanded","true");
+        panel.style.maxHeight=panel.scrollHeight+"px";
+      }
+    });
+  });
+  function sizeOpen(){
+    var open=acc.querySelector(".acc-item.open .acc-panel");
+    if(open) open.style.maxHeight=open.scrollHeight+"px";
+  }
+  sizeOpen();
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(sizeOpen);
+  var rt=null;
+  window.addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(sizeOpen,200);});
+})();
 
 /* measure every stage once, then hold the tallest so the panel never resizes */
 (function lockLoopHeight(){
@@ -1230,6 +1311,7 @@ function show(i){
     body.style.minHeight=(Math.ceil(tallest)+2)+"px";
     show(prev);
   }
+  if(isPhone.matches){ body.style.minHeight=""; return; }
   measure();
   /* text metrics change once the webfonts swap in, so measure again after */
   if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ measure(); });
