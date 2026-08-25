@@ -761,9 +761,9 @@ a{color:inherit}
         <li><a href="https://intriguestudios.de">Intrigue Studios</a></li>
         <li><a href="mailto:team@intriguestudios.de">Contact</a></li></ul></div>
       <div><h4>Legal</h4><ul>
-        <li><a href="impressum.html">Impressum</a></li>
-        <li><a href="datenschutz.html">Datenschutz</a></li>
-        <li><a href="agb.html">Terms</a></li></ul></div>
+        <li><a href="impressum">Impressum</a></li>
+        <li><a href="datenschutz">Datenschutz</a></li>
+        <li><a href="agb">Terms</a></li></ul></div>
     </div>
     <div class="foot-bot">
       <span>&copy; 2026 Intrigue Studios, Krefeld, Germany</span>
