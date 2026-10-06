@@ -136,9 +136,117 @@ html[data-theme="dark"] .theme-toggle .moon{display:none}
  .button{gap:12px}
  figcaption{flex-wrap:wrap}
 }
+
+/* ELEVATION LAYER: motion and polish, uses existing brand tokens only */
+:root{--ease:cubic-bezier(.22,1,.36,1)}
+::selection{background:var(--gold);color:#10141F}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes draw{to{transform:scaleX(1)}}
+@keyframes settle{from{scale:1.16}to{scale:1.02}}
+@keyframes cue{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(176,141,87,.55)}100%{box-shadow:0 0 0 9px rgba(176,141,87,0)}}
+.progress{position:fixed;top:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;z-index:120;pointer-events:none}
+.navigation{border-bottom-color:transparent;transition:min-height .6s var(--ease),border-color .6s,background .6s}
+.navigation.scrolled{border-bottom-color:var(--line);min-height:68px}
+.navigation nav a:not(.button){position:relative;padding-block:4px}
+.navigation nav a:not(.button):after{content:'';position:absolute;left:0;right:0;bottom:-2px;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:right;transition:transform .6s var(--ease)}
+.navigation nav a:not(.button):hover:after{transform:scaleX(1);transform-origin:left}
+.dot{animation:pulse 2.4s ease-out infinite}
+.button{transition:background .5s var(--ease),color .5s,border-color .5s}
+.button span{display:inline-block;transition:transform .6s var(--ease)}
+.button:hover span{transform:translate(4px,-4px)}
+.button:hover{background:var(--gold);border-color:var(--gold);color:#10141F}
+html[data-theme="dark"] .button:hover{background:#F0EDE4;border-color:#F0EDE4}
+html .contact-card .button:hover{background:#F5F3EC;border-color:#F5F3EC;color:#1C2333}
+/* hero */
+.hero-media video{animation:settle 3.2s var(--ease) both;translate:0 var(--py,0px);will-change:translate,scale}
+.hero-media:after{background:linear-gradient(180deg,rgba(16,20,31,.45),transparent 38%,rgba(16,20,31,.8))}
+.hero-media:before{content:'';position:absolute;left:4%;right:4%;bottom:0;height:1px;background:var(--gold);z-index:2;transform:scaleX(0);transform-origin:left;animation:draw 1.8s .9s var(--ease) forwards}
+.media-top,.media-bottom .eyebrow{opacity:0;animation:fade 1.6s .3s var(--ease) forwards}
+.media-bottom{opacity:var(--fo,1);translate:0 var(--ty,0px);will-change:translate,opacity}
+.media-bottom .eyebrow{animation-delay:.5s}
+.cue{position:absolute;right:4%;bottom:42px;z-index:2;display:flex;align-items:center;gap:14px;color:#fff;font:9px var(--mono);letter-spacing:.22em;opacity:0;animation:fade 1.4s 1.6s forwards}
+.cue i{position:relative;overflow:hidden;width:64px;height:1px;background:#ffffff40}
+.cue i:after{content:'';position:absolute;inset:0;background:#fff;animation:cue 2.6s var(--ease) infinite}
+/* line reveals */
+.ln{display:block;overflow:hidden;padding:0 .08em .14em 0;margin:0 -.08em -.14em 0}
+.rl .ln>span{display:block;transform:translateY(112%);transition:transform 1.3s var(--ease) calc(var(--i)*.12s)}
+.rl.in .ln>span{transform:none}
+.hero-media .rl .ln>span{transition-delay:calc(.5s + var(--i)*.14s)}
+/* block reveals */
+.js [data-r]{opacity:0;transform:translateY(28px);transition:opacity 1s var(--ease),transform 1.3s var(--ease);transition-delay:var(--d,0s)}
+.js [data-r].in{opacity:1;transform:none}
+/* services */
+.service{position:relative;transition:background .6s var(--ease)}
+.service:before{content:'';position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform 1s var(--ease)}
+.service:hover:before{transform:scaleX(1)}
+.service h3{transition:transform .8s var(--ease)}
+.service:hover h3{transform:translateX(8px)}
+.service li:before{display:inline-block;transition:transform .5s var(--ease)}
+.service li:hover:before{transform:translate(3px,-3px)}
+.service>a{transition:border-color .5s,color .5s}
+.service>a:hover,.text-link:hover{border-color:var(--gold);color:var(--gold)}
+.text-link{transition:border-color .5s,color .5s}
+/* film */
+.showcase video{outline:1px solid var(--gold);outline-offset:12px;transition:outline-offset 1s var(--ease)}
+.showcase figure:hover video{outline-offset:6px}
+/* workflow */
+.steps button{position:relative}
+.steps button:before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold);transform:scaleY(0);transition:transform .6s var(--ease)}
+.steps button[aria-selected=true]:before{transform:scaleY(1)}
+.steps button:hover{color:var(--navy)}
+.workflow-panel{position:relative;overflow:hidden}
+.workflow-panel:before{content:'';position:absolute;right:-20%;top:-30%;width:70%;aspect-ratio:1;background:radial-gradient(circle,rgba(176,141,87,.24),transparent 65%);pointer-events:none}
+.workflow-panel>*{position:relative}
+/* process */
+.process-grid article{position:relative;padding-top:26px}
+.process-grid article:before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--line)}
+.process-grid article:after{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform 1.6s var(--ease) calc(var(--d,0s) + .3s)}
+.process-grid article.in:after{transform:scaleX(1)}
+/* faq */
+summary{display:flex;justify-content:space-between;align-items:center;gap:20px;list-style:none;transition:color .5s}
+summary::-webkit-details-marker{display:none}
+summary:after{content:'+';font:300 26px/1 var(--display);color:var(--gold);transition:transform .6s var(--ease)}
+summary:hover{color:var(--gold)}
+details[open] summary:after{transform:rotate(45deg)}
+details[open] p{animation:fade .8s var(--ease)}
+/* contact */
+.contact{position:relative;overflow:hidden}
+.contact:before{content:'';position:absolute;left:-12%;top:-40%;width:60%;aspect-ratio:1;background:radial-gradient(circle,rgba(176,141,87,.18),transparent 65%);pointer-events:none}
+.contact .shell{position:relative}
+@media(max-width:640px){.navigation.scrolled{min-height:64px}.cue{display:none}.showcase video{outline-offset:8px}}
+@media(prefers-reduced-motion:reduce){.hero-media video{translate:none}.media-top,.media-bottom .eyebrow,.cue{opacity:1}}
+
+/* WOW LAYER */
+@keyframes settle{from{scale:1.18}to{scale:1.05}}
+@keyframes preOut{to{visibility:hidden}}
+@keyframes preLine{to{transform:scaleX(1)}}
+@keyframes preIn{to{opacity:1;transform:none}}
+#pre{display:none}
+body.pre{overflow:hidden}
+body.pre #pre{display:flex;animation:preOut 0s 4.5s forwards}
+#pre{position:fixed;inset:0;z-index:300;background:#1C2333;color:#F5F3EC;align-items:center;justify-content:center;transition:transform 1s cubic-bezier(.76,0,.24,1)}
+#pre.leave{transform:translateY(-100%)}
+.pre-in{text-align:center;opacity:0;transform:translateY(14px);animation:preIn 1s .15s var(--ease) forwards}
+.pre-in b{display:block;font:700 clamp(22px,3vw,34px) var(--display);letter-spacing:.02em}
+.pre-in small{display:block;font:9px var(--mono);letter-spacing:.3em;margin-top:10px;color:#C6A46A}
+.pre-in i{display:block;height:1px;width:min(260px,60vw);margin:26px auto 0;background:#C6A46A;transform:scaleX(0);transform-origin:left;animation:preLine 1.2s .3s var(--ease) forwards}
+.pre .hero-media video,.pre .hero-media:before,.pre .media-top,.pre .media-bottom .eyebrow,.pre .cue{animation-play-state:paused}
+.hero-media video{translate:var(--mxp,0px) calc(var(--py,0px) + var(--myp,0px))}
+.showcase video{will-change:scale}
+.button{transition:background .5s var(--ease),color .5s,border-color .5s,translate .5s var(--ease)}
+.cur{position:fixed;left:-18px;top:-18px;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:200;opacity:0;transition:opacity .4s,width .5s var(--ease),height .5s var(--ease),left .5s var(--ease),top .5s var(--ease),background .4s}
+.cur.on{opacity:.9}
+.cur.hot{width:64px;height:64px;left:-32px;top:-32px;background:rgba(176,141,87,.14)}
+.service:after,.process-grid article>i{content:'';position:absolute;inset:0;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(176,141,87,.15),transparent 60%);opacity:0;transition:opacity .6s;pointer-events:none}
+.service:hover:after{opacity:1}
+@media(prefers-reduced-motion:reduce){body.pre{overflow:auto}#pre{display:none!important}}
 </style>
 </head>
 <body>
+<script>try{if(!sessionStorage.getItem('pre'))document.body.classList.add('pre')}catch(e){document.body.classList.add('pre')}</script>
+<div id="pre" aria-hidden="true"><div class="pre-in"><b>INTRIGUE STUDIOS</b><small>REAL ESTATE</small><i></i></div></div>
+
 <a class="skip" href="#main">Skip to content</a>
 <header class="navigation shell"><a class="brand" href="index.html">INTRIGUE STUDIOS<span>CREATIVE TECHNOLOGY</span></a><button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false"><svg class="moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button><button id="menuButton" class="menu-button" aria-expanded="false" aria-controls="navigation">Menu +</button><nav id="navigation" aria-label="Main navigation"><a href="#services">The services</a><a href="#showcase">The film</a><a href="#workflow">The system</a><a class="button small" href="#contact" data-booking>Let’s talk <span>↗</span></a></nav></header>
 <main id="main">
@@ -293,5 +401,59 @@ document.querySelectorAll('[data-booking]').forEach(button=>button.addEventListe
 document.getElementById('calClose').addEventListener('click',()=>bookingModal.close());
 bookingModal.addEventListener('click',e=>{if(e.target===bookingModal){const r=bookingModal.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)bookingModal.close();}});
 bookingModal.addEventListener('close',()=>{document.body.style.overflow=priorOverflow;if(bookingTrigger)bookingTrigger.focus();});
+
+/* ELEVATION LAYER */
+(()=>{
+const d=document,root=d.documentElement,rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+root.classList.add('js');
+const hero=d.querySelector('.hero-media'),nav=d.querySelector('.navigation');
+const split=el=>{el.innerHTML=el.innerHTML.split(/<br\s*\/?>/i).map((p,i)=>`<span class="ln"><span style="--i:${i}">${p.trim()}</span></span>`).join('');el.classList.add('rl');};
+const heads=[d.querySelector('.media-bottom p'),...d.querySelectorAll('h1,h2')].filter(Boolean);
+heads.forEach(split);
+const blocks=[...d.querySelectorAll('.intro .eyebrow,.section-heading .eyebrow,.process .eyebrow,.faq .eyebrow,.contact .eyebrow,.intro-aside,.service-strip span,.service,.section-heading>p,.showcase-grid>div>p,.showcase-grid>div>a,.showcase figure,.steps,.workflow-panel,.process-grid article,.faq details,.contact h2+p,.contact-card,.footer-top,.programs')];
+blocks.forEach(el=>{el.setAttribute('data-r','');el.style.setProperty('--d',([...el.parentElement.children].indexOf(el)%4)*.09+'s');});
+const items=[...heads.filter(h=>!hero.contains(h)),...blocks];
+if(rm||!('IntersectionObserver' in window)){items.forEach(e=>e.classList.add('in'));}
+else{const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.18,rootMargin:'0px 0px -6% 0px'});items.forEach(e=>io.observe(e));}
+window.heroGo=()=>hero.querySelectorAll('.rl').forEach(e=>e.classList.add('in'));
+hero.insertAdjacentHTML('beforeend','<div class="cue" aria-hidden="true"><span>SCROLL</span><i></i></div>');
+const bar=d.createElement('div');bar.className='progress';bar.setAttribute('aria-hidden','true');d.body.append(bar);
+let tick=false;
+function frame(){tick=false;const y=scrollY,max=root.scrollHeight-innerHeight;
+bar.style.transform='scaleX('+(max>0?y/max:0)+')';nav.classList.toggle('scrolled',y>30);
+if(!rm&&y<innerHeight*1.2){hero.style.setProperty('--py',y*.16+'px');hero.style.setProperty('--fo',Math.max(0,1-y/(innerHeight*.55)));hero.style.setProperty('--ty',-y*.08+'px');}}
+addEventListener('scroll',()=>{if(!tick){tick=true;requestAnimationFrame(frame);}},{passive:true});
+frame();
+})();
+
+/* WOW LAYER */
+(()=>{
+const d=document,b=d.body,rm=matchMedia('(prefers-reduced-motion: reduce)').matches,fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
+const pre=d.getElementById('pre');
+const seen=()=>{try{sessionStorage.setItem('pre','1')}catch(e){}};
+const go=()=>{b.classList.remove('pre');setTimeout(()=>window.heroGo&&window.heroGo(),200);};
+if(pre&&b.classList.contains('pre')&&!rm){setTimeout(()=>{pre.classList.add('leave');seen();setTimeout(go,700);},1800);}
+else{b.classList.remove('pre');seen();go();}
+if(fine&&!rm){
+const ring=d.createElement('div');ring.className='cur';b.append(ring);
+const hero=d.querySelector('.hero-media');
+let tx=innerWidth/2,ty=innerHeight/2,x=tx,y=ty,px=0,py=0;
+addEventListener('pointermove',e=>{tx=e.clientX;ty=e.clientY;ring.classList.add('on');},{passive:true});
+d.addEventListener('pointerover',e=>ring.classList.toggle('hot',!!(e.target.closest&&e.target.closest('a,button,summary,select,.service'))));
+d.documentElement.addEventListener('mouseleave',()=>ring.classList.remove('on'));
+(function loop(){
+x+=(tx-x)*.18;y+=(ty-y)*.18;ring.style.transform='translate3d('+x+'px,'+y+'px,0)';
+px+=((tx/innerWidth-.5)*-26-px)*.06;py+=((ty/innerHeight-.5)*-16-py)*.06;
+hero.style.setProperty('--mxp',px.toFixed(2)+'px');hero.style.setProperty('--myp',py.toFixed(2)+'px');
+requestAnimationFrame(loop);})();
+d.querySelectorAll('.button').forEach(el=>{
+el.addEventListener('pointermove',e=>{const r=el.getBoundingClientRect();el.style.translate=((e.clientX-r.left-r.width/2)*.18)+'px '+((e.clientY-r.top-r.height/2)*.28)+'px';});
+el.addEventListener('pointerleave',()=>{el.style.translate='';});});
+d.querySelectorAll('.service').forEach(el=>el.addEventListener('pointermove',e=>{const r=el.getBoundingClientRect();el.style.setProperty('--mx',(e.clientX-r.left)+'px');el.style.setProperty('--my',(e.clientY-r.top)+'px');}));
+}
+const vid=d.querySelector('.showcase video');
+function vs(){const r=vid.getBoundingClientRect();const p=Math.min(1,Math.max(0,(innerHeight-r.top)/(innerHeight*.75)));vid.style.scale=(.9+.1*p).toFixed(3);}
+if(vid&&!rm){addEventListener('scroll',vs,{passive:true});vs();}
+})();
 </script>
 </body></html>
