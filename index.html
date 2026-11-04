@@ -480,6 +480,35 @@ html:not([data-lang="de"]) .lang-toggle .en,html[data-lang="de"] .lang-toggle .d
 @media(max-width:1100px){.nav-links{display:none}}
 
 .hero-note{margin-top:20px;font-size:12.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#EAE4D4;text-shadow:0 1px 12px rgba(16,20,31,.6)}
+
+/* phone fixes: nav fit, long German words, grids that stretched past the screen */
+.hero-copy,.hero-side,.route,.sys,.plan,.ind,.cap-item,.dstep,.step,.proof>div{min-width:0}
+html[lang="de"] h1,html[lang="de"] h2,html[lang="de"] h3,html[lang="de"] p,html[lang="de"] li,html[lang="de"] .cap-item b,html[lang="de"] .tab b{-webkit-hyphens:auto;hyphens:auto;overflow-wrap:break-word}
+@media(max-width:1020px){
+  .hero-top,.two,.about,.contact,.deep{grid-template-columns:minmax(0,1fr)}
+}
+@media(max-width:760px){
+  .sys-grid,.proof,.programs,.plans,.steps,.caps,.ind-grid,.ugc,.fields,.flow{grid-template-columns:minmax(0,1fr)}
+  .ugc{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .console-body{grid-template-columns:minmax(0,1fr)}
+  .nav-inner{padding:0 16px;gap:8px;height:60px}
+  .brand{font-size:14.5px;letter-spacing:.02em}
+  .nav-right{gap:6px}
+  .lang-toggle{height:36px;padding:0 10px;font-size:12px;gap:4px}
+  .theme-toggle{width:36px;height:36px}
+  .nav-right .btn.small{padding:9px 12px;font-size:13px;white-space:nowrap}
+  .wrap{padding:0 18px}
+  .hero h1{font-size:clamp(30px,8.6vw,48px)}
+  html[lang="de"] .hero h1{font-size:clamp(25px,7vw,48px)}
+  h2{font-size:clamp(26px,7.4vw,40px)}
+  html[lang="de"] h2{font-size:clamp(24px,6.6vw,40px)}
+}
+@media(max-width:440px){
+  .nav-inner{padding:0 14px}
+  .brand{font-size:12px}
+  .lang-toggle{padding:0 8px}
+  .nav-right .btn.small{padding:8px 10px;font-size:12.5px}
+}
 </style>
 </head>
 <body>
