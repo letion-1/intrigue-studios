@@ -721,12 +721,18 @@ html[lang="de"] h1,html[lang="de"] h2,html[lang="de"] h3,html[lang="de"] p,html[
 
 <section class="center" style="padding:56px 0 0">
   <div class="wrap">
-    <video controls playsinline preload="metadata" poster="trailer-poster.jpg"
-      style="width:100%;max-width:960px;display:block;margin:0 auto;aspect-ratio:16/9;background:#000;border:1px solid var(--line,#E8E6DF);border-radius:4px">
-      <source src="intrigue-operations-ai-trailer.mp4" type="video/mp4">
-    </video>
+    <div id="trailer" style="position:relative;width:100%;max-width:960px;margin:0 auto;aspect-ratio:16/9;background:#000;border:1px solid var(--line,#E8E6DF);border-radius:4px;overflow:hidden">
+      <button type="button" id="trailerPlay" aria-label="Play trailer" style="position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;cursor:pointer;background:url('trailer-poster.jpg') center/cover no-repeat">
+        <span class="play-btn" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:76px;height:76px"><svg viewBox="0 0 24 24" style="width:28px;height:28px;fill:#1C2333;margin-left:4px"><path d="M8 5v14l11-7z"/></svg></span>
+      </button>
+    </div>
   </div>
 </section>
+<script>
+document.getElementById('trailerPlay').addEventListener('click',function(){
+  document.getElementById('trailer').innerHTML='<iframe src="https://vimeo.com/1247206897?share=copy&fl=sv&fe=ci" style="position:absolute;inset:0;width:100%;height:100%;border:0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="INTRIGUE Operations AI trailer"></iframe>';
+});
+</script>
   
 <!-- ============ AUTOMATIONS ============ -->
 <section id="automations" style="padding-top:24px">
